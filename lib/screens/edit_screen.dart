@@ -7,8 +7,11 @@ class EditTaskScreen extends StatefulWidget {
   final TodoItem todo;
   final bool isDarkMode;
 
-  const EditTaskScreen({Key? key, required this.todo, required this.isDarkMode})
-    : super(key: key);
+  const EditTaskScreen({
+    super.key,
+    required this.todo,
+    required this.isDarkMode,
+  });
 
   @override
   State<EditTaskScreen> createState() => _EditTaskScreenState();
@@ -61,7 +64,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(isDark ? 0.3 : 0.1),
+                            color: Color.fromRGBO(0, 0, 0, isDark ? 0.3 : 0.1),
                             blurRadius: 20,
                             offset: const Offset(0, 10),
                           ),
@@ -173,16 +176,46 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                                     ),
                                   ),
                                   const SizedBox(height: 8),
-                                  Text(
-                                    DateFormat(
-                                      'dd-MM-yyyy',
-                                    ).format(selectedDate),
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: isDark
-                                          ? Colors.grey[600]
-                                          : Colors.grey[400],
-                                    ),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.date_range,
+                                        size: 16,
+                                        color: isDark
+                                            ? Colors.grey[400]
+                                            : Colors.black54,
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        DateFormat(
+                                          'dd-MM-yyyy',
+                                        ).format(selectedDate),
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: isDark
+                                              ? Colors.grey[600]
+                                              : Colors.grey[400],
+                                        ),
+                                      ),
+                                      const SizedBox(width: 25),
+                                      Icon(
+                                        Icons.access_time,
+                                        size: 16,
+                                        color: isDark
+                                            ? Colors.grey[400]
+                                            : Colors.black54,
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        selectedTime.format(context),
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: isDark
+                                              ? Colors.grey[600]
+                                              : Colors.grey[400],
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
@@ -201,9 +234,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                                 borderRadius: BorderRadius.circular(30),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: const Color(
-                                      0xFF2B7FE8,
-                                    ).withOpacity(0.3),
+                                    color: const Color(0x4D2B7FE8),
                                     blurRadius: 12,
                                     offset: const Offset(0, 6),
                                   ),

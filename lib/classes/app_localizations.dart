@@ -11,6 +11,9 @@ class AppLocalizations {
 
   static final Map<String, Map<String, String>> _localizedValues = {
     'en': {
+      'no_tasks': 'No Tasks Yet',
+      'no_tasks_message': 'Start adding tasks to organize your day',
+      'add_task_hint': 'Tap the + button to create your first task',
       'app_title': 'ToDo List',
       'edit_task': 'Edit Task',
       'settings': 'Settings',
@@ -20,6 +23,7 @@ class AppLocalizations {
       'dark': 'Dark',
       'done': 'Done!',
       'add_new_task': 'Add New Task',
+      'task_added': 'Task added successfully',
       'task_title': 'Task Title',
       'task_details': 'Task Details',
       'select_time': 'Select time',
@@ -34,6 +38,7 @@ class AppLocalizations {
       'details_hint': 'Task details',
       'time': 'Time: ',
       'date': 'Date: ',
+      'today': 'Today',
       'mon': 'Mon',
       'tue': 'Tue',
       'wed': 'Wed',
@@ -41,8 +46,26 @@ class AppLocalizations {
       'fri': 'Fri',
       'sat': 'Sat',
       'sun': 'Sun',
+      'january': 'January',
+      'february': 'February',
+      'march': 'March',
+      'april': 'April',
+      'may': 'May',
+      'june': 'June',
+      'july': 'July',
+      'august': 'August',
+      'september': 'September',
+      'october': 'October',
+      'november': 'November',
+      'december': 'December',
+      'logout': 'Logout',
+      'logout_confirm': 'Are you sure you want to logout?',
+      'logout_success': 'Logout successful',
     },
     'ar': {
+      'no_tasks': 'لا توجد مهام بعد',
+      'no_tasks_message': 'ابدأ بإضافة المهام لتنظيم يومك',
+      'add_task_hint': 'اضغط على زر + لإنشاء مهمتك الأولى',
       'app_title': 'قائمة المهام',
       'edit_task': 'تعديل المهمة',
       'settings': 'الإعدادات',
@@ -52,6 +75,7 @@ class AppLocalizations {
       'dark': 'داكن',
       'done': 'تم!',
       'add_new_task': 'إضافة مهمة جديدة',
+      'task_added': 'تمت إضافة المهمة بنجاح',
       'task_title': 'عنوان المهمة',
       'task_details': 'تفاصيل المهمة',
       'select_time': 'اختر الوقت',
@@ -66,6 +90,7 @@ class AppLocalizations {
       'details_hint': 'تفاصيل المهمة',
       'time': 'الوقت: ',
       'date': 'التاريخ: ',
+      'today': 'اليوم',
       'mon': 'الإثنين',
       'tue': 'الثلاثاء',
       'wed': 'الأربعاء',
@@ -73,8 +98,26 @@ class AppLocalizations {
       'fri': 'الجمعة',
       'sat': 'السبت',
       'sun': 'الأحد',
+      'january': 'يناير',
+      'february': 'فبراير',
+      'march': 'مارس',
+      'april': 'أبريل',
+      'may': 'مايو',
+      'june': 'يونيو',
+      'july': 'يوليو',
+      'august': 'أغسطس',
+      'september': 'سبتمبر',
+      'october': 'أكتوبر',
+      'november': 'نوفمبر',
+      'december': 'ديسمبر',
+      'logout': 'تسجيل الخروج',
+      'logout_confirm': 'هل أنت متأكد من تسجيل الخروج؟',
+      'logout_success': 'تم تسجيل الخروج بنجاح',
     },
     'es': {
+      'no_tasks': 'No Hay Tareas',
+      'no_tasks_message': 'Comienza a agregar tareas para organizar tu día',
+      'add_task_hint': 'Toca el botón + para crear tu primera tarea',
       'app_title': 'Lista de Tareas',
       'edit_task': 'Editar Tarea',
       'settings': 'Configuración',
@@ -84,6 +127,7 @@ class AppLocalizations {
       'dark': 'Oscuro',
       'done': '¡Hecho!',
       'add_new_task': 'Agregar Nueva Tarea',
+      'task_added': 'Tarea agregada exitosamente',
       'task_title': 'Título de la Tarea',
       'task_details': 'Detalles de la Tarea',
       'select_time': 'Seleccionar hora',
@@ -98,6 +142,7 @@ class AppLocalizations {
       'details_hint': 'Detalles de la tarea',
       'time': 'Hora: ',
       'date': 'Fecha: ',
+      'today': 'Hoy',
       'mon': 'Lun',
       'tue': 'Mar',
       'wed': 'Mié',
@@ -105,8 +150,28 @@ class AppLocalizations {
       'fri': 'Vie',
       'sat': 'Sáb',
       'sun': 'Dom',
+      'january': 'Enero',
+      'february': 'Febrero',
+      'march': 'Marzo',
+      'april': 'Abril',
+      'may': 'Mayo',
+      'june': 'Junio',
+      'july': 'Julio',
+      'august': 'Agosto',
+      'september': 'Septiembre',
+      'october': 'Octubre',
+      'november': 'Noviembre',
+      'december': 'Diciembre',
+      'logout': 'Cerrar Sesión',
+      'logout_confirm': '¿Estás seguro de que quieres cerrar sesión?',
+      'logout_success': 'Cierre de sesión exitoso',
     },
     'fr': {
+      'no_tasks': 'Aucune Tâche',
+      'no_tasks_message':
+          'Commencez à ajouter des tâches pour organiser votre journée',
+      'add_task_hint':
+          'Appuyez sur le bouton + pour créer votre première tâche',
       'app_title': 'Liste de Tâches',
       'edit_task': 'Modifier la Tâche',
       'settings': 'Paramètres',
@@ -116,6 +181,7 @@ class AppLocalizations {
       'dark': 'Sombre',
       'done': 'Fait!',
       'add_new_task': 'Ajouter Nouvelle Tâche',
+      'task_added': 'Tâche ajoutée avec succès',
       'task_title': 'Titre de la Tâche',
       'task_details': 'Détails de la Tâche',
       'select_time': 'Sélectionner l\'heure',
@@ -130,6 +196,7 @@ class AppLocalizations {
       'details_hint': 'Détails de la tâche',
       'time': 'Heure: ',
       'date': 'Date: ',
+      'today': 'Aujourd\'hui',
       'mon': 'Lun',
       'tue': 'Mar',
       'wed': 'Mer',
@@ -137,8 +204,27 @@ class AppLocalizations {
       'fri': 'Ven',
       'sat': 'Sam',
       'sun': 'Dim',
+      'january': 'Janvier',
+      'february': 'Février',
+      'march': 'Mars',
+      'april': 'Avril',
+      'may': 'Mai',
+      'june': 'Juin',
+      'july': 'Juillet',
+      'august': 'Août',
+      'september': 'Septembre',
+      'october': 'Octobre',
+      'november': 'Novembre',
+      'december': 'Décembre',
+      'logout': 'Déconnexion',
+      'logout_confirm': 'Êtes-vous sûr de vouloir vous déconnecter?',
+      'logout_success': 'Déconnexion réussie',
     },
     'de': {
+      'no_tasks': 'Keine Aufgaben',
+      'no_tasks_message':
+          'Fügen Sie Aufgaben hinzu, um Ihren Tag zu organisieren',
+      'add_task_hint': 'Tippen Sie auf +, um Ihre erste Aufgabe zu erstellen',
       'app_title': 'Aufgabenliste',
       'edit_task': 'Aufgabe Bearbeiten',
       'settings': 'Einstellungen',
@@ -148,6 +234,7 @@ class AppLocalizations {
       'dark': 'Dunkel',
       'done': 'Erledigt!',
       'add_new_task': 'Neue Aufgabe Hinzufügen',
+      'task_added': 'Aufgabe erfolgreich hinzugefügt',
       'task_title': 'Aufgabentitel',
       'task_details': 'Aufgabendetails',
       'select_time': 'Zeit Auswählen',
@@ -162,6 +249,7 @@ class AppLocalizations {
       'details_hint': 'Aufgabendetails',
       'time': 'Zeit: ',
       'date': 'Datum: ',
+      'today': 'Heute',
       'mon': 'Mo',
       'tue': 'Di',
       'wed': 'Mi',
@@ -169,8 +257,27 @@ class AppLocalizations {
       'fri': 'Fr',
       'sat': 'Sa',
       'sun': 'So',
+      'january': 'Januar',
+      'february': 'Februar',
+      'march': 'März',
+      'april': 'April',
+      'may': 'Mai',
+      'june': 'Juni',
+      'july': 'Juli',
+      'august': 'August',
+      'september': 'September',
+      'october': 'Oktober',
+      'november': 'November',
+      'december': 'Dezember',
+      'logout': 'Abmelden',
+      'logout_confirm': 'Möchten Sie sich wirklich abmelden?',
+      'logout_success': 'Abmeldung erfolgreich',
     },
     'it': {
+      'no_tasks': 'Nessuna Attività',
+      'no_tasks_message':
+          'Inizia ad aggiungere attività per organizzare la tua giornata',
+      'add_task_hint': 'Tocca il pulsante + per creare la tua prima attività',
       'app_title': 'Lista delle Cose da Fare',
       'edit_task': 'Modifica Attività',
       'settings': 'Impostazioni',
@@ -180,6 +287,7 @@ class AppLocalizations {
       'dark': 'Scuro',
       'done': 'Fatto!',
       'add_new_task': 'Aggiungi Nuova Attività',
+      'task_added': 'Attività aggiunta con successo',
       'task_title': 'Titolo Attività',
       'task_details': 'Dettagli Attività',
       'select_time': 'Seleziona ora',
@@ -194,6 +302,7 @@ class AppLocalizations {
       'details_hint': 'Dettagli attività',
       'time': 'Ora: ',
       'date': 'Data: ',
+      'today': 'Oggi',
       'mon': 'Lun',
       'tue': 'Mar',
       'wed': 'Mer',
@@ -201,8 +310,27 @@ class AppLocalizations {
       'fri': 'Ven',
       'sat': 'Sab',
       'sun': 'Dom',
+      'january': 'Gennaio',
+      'february': 'Febbraio',
+      'march': 'Marzo',
+      'april': 'Aprile',
+      'may': 'Maggio',
+      'june': 'Giugno',
+      'july': 'Luglio',
+      'august': 'Agosto',
+      'september': 'Settembre',
+      'october': 'Ottobre',
+      'november': 'Novembre',
+      'december': 'Dicembre',
+      'logout': 'Esci',
+      'logout_confirm': 'Sei sicuro di voler uscire?',
+      'logout_success': 'Disconnessione riuscita',
     },
     'ru': {
+      'no_tasks': 'Нет Задач',
+      'no_tasks_message':
+          'Начните добавлять задачи, чтобы организовать свой день',
+      'add_task_hint': 'Нажмите кнопку +, чтобы создать первую задачу',
       'app_title': 'Список Дел',
       'edit_task': 'Редактировать Задачу',
       'settings': 'Настройки',
@@ -212,6 +340,7 @@ class AppLocalizations {
       'dark': 'Тёмный',
       'done': 'Готово!',
       'add_new_task': 'Добавить Новую Задачу',
+      'task_added': 'Задача успешно добавлена',
       'task_title': 'Название Задачи',
       'task_details': 'Детали Задачи',
       'select_time': 'Выберите время',
@@ -226,15 +355,35 @@ class AppLocalizations {
       'details_hint': 'Детали задачи',
       'time': 'Время: ',
       'date': 'Дата: ',
+      'today': 'Сегодня',
       'mon': 'Пн',
       'tue': 'Вт',
-      'wed': 'Ср',
+      'wed': 'Cp',
       'thu': 'Чт',
       'fri': 'Пт',
-      'sat': 'Сб',
-      'sun': 'Вс',
+      'sat': 'C6',
+      'sun': 'Bc',
+      'january': 'Январь',
+      'february': 'Февраль',
+      'march': 'Март',
+      'april': 'Апрель',
+      'may': 'Май',
+      'june': 'Июнь',
+      'july': 'Июль',
+      'august': 'Август',
+      'september': 'Сентябрь',
+      'october': 'Октябрь',
+      'november': 'Ноябрь',
+      'december': 'Декабрь',
+      'logout': 'Выйти',
+      'logout_confirm': 'Вы уверены, что хотите выйти?',
+      'logout_success': 'Выход выполнен успешно',
     },
     'tr': {
+      'no_tasks': 'Görev Yok',
+      'no_tasks_message':
+          'Gününüzü organize etmek için görev eklemeye başlayın',
+      'add_task_hint': 'İlk görevinizi oluşturmak için + düğmesine dokunun',
       'app_title': 'Yapılacaklar Listesi',
       'edit_task': 'Görevi Düzenle',
       'settings': 'Ayarlar',
@@ -244,6 +393,7 @@ class AppLocalizations {
       'dark': 'Koyu',
       'done': 'Tamamlandı!',
       'add_new_task': 'Yeni Görev Ekle',
+      'task_added': 'Görev başarıyla eklendi',
       'task_title': 'Görev Başlığı',
       'task_details': 'Görev Detayları',
       'select_time': 'Zaman Seç',
@@ -258,6 +408,7 @@ class AppLocalizations {
       'details_hint': 'Görev detayları',
       'time': 'Zaman: ',
       'date': 'Tarih: ',
+      'today': 'Bugün',
       'mon': 'Pzt',
       'tue': 'Sal',
       'wed': 'Çar',
@@ -265,8 +416,27 @@ class AppLocalizations {
       'fri': 'Cum',
       'sat': 'Cmt',
       'sun': 'Paz',
+      'january': 'Ocak',
+      'february': 'Şubat',
+      'march': 'Mart',
+      'april': 'Nisan',
+      'may': 'Mayıs',
+      'june': 'Haziran',
+      'july': 'Temmuz',
+      'august': 'Ağustos',
+      'september': 'Eylül',
+      'october': 'Ekim',
+      'november': 'Kasım',
+      'december': 'Aralık',
+      'logout': 'Çıkış Yap',
+      'logout_confirm': 'Çıkış yapmak istediğinizden emin misiniz?',
+      'logout_success': 'Çıkış başarılı',
     },
     'hi': {
+      'no_tasks': 'कोई कार्य नहीं',
+      'no_tasks_message':
+          'अपने दिन को व्यवस्थित करने के लिए कार्य जोड़ना शुरू करें',
+      'add_task_hint': 'अपना पहला कार्य बनाने के लिए + बटन पर टैप करें',
       'app_title': 'कार्य सूची',
       'edit_task': 'कार्य संपादित करें',
       'settings': 'सेटिंग्स',
@@ -276,6 +446,7 @@ class AppLocalizations {
       'dark': 'अंधेरा',
       'done': 'पूर्ण!',
       'add_new_task': 'नया कार्य जोड़ें',
+      'task_added': 'कार्य सफलतापूर्वक जोड़ा गया',
       'task_title': 'कार्य शीर्षक',
       'task_details': 'कार्य विवरण',
       'select_time': 'समय चुनें',
@@ -290,6 +461,7 @@ class AppLocalizations {
       'details_hint': 'कार्य विवरण',
       'time': 'समय: ',
       'date': 'तारीख: ',
+      'today': 'आज',
       'mon': 'सोम',
       'tue': 'मंगल',
       'wed': 'बुध',
@@ -297,8 +469,26 @@ class AppLocalizations {
       'fri': 'शुक्र',
       'sat': 'शनि',
       'sun': 'रवि',
+      'january': 'जनवरी',
+      'february': 'फ़रवरी',
+      'march': 'मार्च',
+      'april': 'अप्रैल',
+      'may': 'मई',
+      'june': 'जून',
+      'july': 'जुलाई',
+      'august': 'अगस्त',
+      'september': 'सितंबर',
+      'october': 'अक्टूबर',
+      'november': 'नवंबर',
+      'december': 'दिसंबर',
+      'logout': 'लॉगआउट',
+      'logout_confirm': 'क्या आप वाकई लॉगआउट करना चाहते हैं?',
+      'logout_success': 'लॉगआउट सफल',
     },
     'zh': {
+      'no_tasks': '暂无任务',
+      'no_tasks_message': '开始添加任务来组织您的一天',
+      'add_task_hint': '点击 + 按钮创建您的第一个任务',
       'app_title': '待办事项列表',
       'edit_task': '编辑任务',
       'settings': '设置',
@@ -308,6 +498,7 @@ class AppLocalizations {
       'dark': '深色',
       'done': '完成！',
       'add_new_task': '添加新任务',
+      'task_added': '任务添加成功',
       'task_title': '任务标题',
       'task_details': '任务详情',
       'select_time': '选择时间',
@@ -322,6 +513,7 @@ class AppLocalizations {
       'details_hint': '任务详情',
       'time': '时间：',
       'date': '日期：',
+      'today': '今天',
       'mon': '周一',
       'tue': '周二',
       'wed': '周三',
@@ -329,9 +521,28 @@ class AppLocalizations {
       'fri': '周五',
       'sat': '周六',
       'sun': '周日',
+      'january': '一月',
+      'february': '二月',
+      'march': '三月',
+      'april': '四月',
+      'may': '五月',
+      'june': '六月',
+      'july': '七月',
+      'august': '八月',
+      'september': '九月',
+      'october': '十月',
+      'november': '十一月',
+      'december': '十二月',
+      'logout': '登出',
+      'logout_confirm': '您确定要登出吗？',
+      'logout_success': '登出成功',
     },
   };
 
+  String get noTasks => _localizedValues[languageCode]!['no_tasks']!;
+  String get noTasksMessage =>
+      _localizedValues[languageCode]!['no_tasks_message']!;
+  String get addTaskHint => _localizedValues[languageCode]!['add_task_hint']!;
   String get appTitle => _localizedValues[languageCode]!['app_title']!;
   String get editTask => _localizedValues[languageCode]!['edit_task']!;
   String get settings => _localizedValues[languageCode]!['settings']!;
@@ -341,6 +552,7 @@ class AppLocalizations {
   String get dark => _localizedValues[languageCode]!['dark']!;
   String get done => _localizedValues[languageCode]!['done']!;
   String get addNewTask => _localizedValues[languageCode]!['add_new_task']!;
+  String get taskAdded => _localizedValues[languageCode]!['task_added']!;
   String get taskTitle => _localizedValues[languageCode]!['task_title']!;
   String get taskDetails => _localizedValues[languageCode]!['task_details']!;
   String get selectTime => _localizedValues[languageCode]!['select_time']!;
@@ -356,6 +568,7 @@ class AppLocalizations {
   String get detailsHint => _localizedValues[languageCode]!['details_hint']!;
   String get time => _localizedValues[languageCode]!['time']!;
   String get date => _localizedValues[languageCode]!['date']!;
+  String get today => _localizedValues[languageCode]!['today']!;
   String get mon => _localizedValues[languageCode]!['mon']!;
   String get tue => _localizedValues[languageCode]!['tue']!;
   String get wed => _localizedValues[languageCode]!['wed']!;
@@ -363,14 +576,58 @@ class AppLocalizations {
   String get fri => _localizedValues[languageCode]!['fri']!;
   String get sat => _localizedValues[languageCode]!['sat']!;
   String get sun => _localizedValues[languageCode]!['sun']!;
+  String get january => _localizedValues[languageCode]!['january']!;
+  String get february => _localizedValues[languageCode]!['february']!;
+  String get march => _localizedValues[languageCode]!['march']!;
+  String get april => _localizedValues[languageCode]!['april']!;
+  String get may => _localizedValues[languageCode]!['may']!;
+  String get june => _localizedValues[languageCode]!['june']!;
+  String get july => _localizedValues[languageCode]!['july']!;
+  String get august => _localizedValues[languageCode]!['august']!;
+  String get september => _localizedValues[languageCode]!['september']!;
+  String get october => _localizedValues[languageCode]!['october']!;
+  String get november => _localizedValues[languageCode]!['november']!;
+  String get december => _localizedValues[languageCode]!['december']!;
+  String get logout => _localizedValues[languageCode]!['logout']!;
+  String get logoutConfirm =>
+      _localizedValues[languageCode]!['logout_confirm']!;
+  String get logoutSuccess =>
+      _localizedValues[languageCode]!['logout_success']!;
+
+  List<String> getMonths() {
+    return [
+      january,
+      february,
+      march,
+      april,
+      may,
+      june,
+      july,
+      august,
+      september,
+      october,
+      november,
+      december,
+    ];
+  }
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   const AppLocalizationsDelegate();
 
   @override
-  bool isSupported(Locale locale) =>
-      ['en', 'ar', 'es', 'fr', 'de', 'it', 'ru', 'tr', 'hi', 'zh'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => [
+    'en',
+    'ar',
+    'es',
+    'fr',
+    'de',
+    'it',
+    'ru',
+    'tr',
+    'hi',
+    'zh',
+  ].contains(locale.languageCode);
 
   @override
   Future<AppLocalizations> load(Locale locale) async {

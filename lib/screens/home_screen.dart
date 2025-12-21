@@ -101,76 +101,13 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
   List<TodoItem> todos = [
-    TodoItem(
-      title: 'Play basket ball',
-      details: 'Play basketball at the local court',
-      time: const TimeOfDay(hour: 10, minute: 30),
-      date: DateTime.now(),
-      isCompleted: false,
-    ),
-    TodoItem(
-      title: 'Play basket ball',
-      details: 'Play basketball at the local court',
-      time: const TimeOfDay(hour: 10, minute: 30),
-      date: DateTime.now(),
-      isCompleted: false,
-    ),
-    TodoItem(
-      title: 'Play basket ball',
-      details: 'Play basketball at the local court',
-      time: const TimeOfDay(hour: 10, minute: 30),
-      date: DateTime.now(),
-      isCompleted: false,
-    ),
-    TodoItem(
-      title: 'Play basket ball',
-      details: 'Play basketball at the local court',
-      time: const TimeOfDay(hour: 10, minute: 30),
-      date: DateTime.now(),
-      isCompleted: false,
-    ),
-    TodoItem(
-      title: 'Play basket ball',
-      details: 'Play basketball at the local court',
-      time: const TimeOfDay(hour: 10, minute: 30),
-      date: DateTime.now(),
-      isCompleted: false,
-    ),
-    TodoItem(
-      title: 'Play basket ball',
-      details: 'Play basketball at the local court',
-      time: const TimeOfDay(hour: 10, minute: 30),
-      date: DateTime.now(),
-      isCompleted: false,
-    ),
-    TodoItem(
-      title: 'Play basket ball',
-      details: 'Play basketball at the local court',
-      time: const TimeOfDay(hour: 10, minute: 30),
-      date: DateTime.now(),
-      isCompleted: false,
-    ),
-    TodoItem(
-      title: 'Play basket ball',
-      details: 'Play basketball at the local court',
-      time: const TimeOfDay(hour: 10, minute: 30),
-      date: DateTime.now(),
-      isCompleted: false,
-    ),
-    TodoItem(
-      title: 'Play basket ball',
-      details: 'Play basketball at the local court',
-      time: const TimeOfDay(hour: 10, minute: 30),
-      date: DateTime.now(),
-      isCompleted: false,
-    ),
-    TodoItem(
-      title: 'Play basket ball',
-      details: 'Play basketball at the local court',
-      time: const TimeOfDay(hour: 10, minute: 30),
-      date: DateTime.now(),
-      isCompleted: false,
-    ),
+    // TodoItem(
+    //   title: 'Play basketball',
+    //   details: 'Play basketball at the local court',
+    //   time: const TimeOfDay(hour: 11, minute: 30),
+    //   date: DateTime.now(),
+    //   isCompleted: false,
+    // ),
   ];
 
   @override
@@ -205,19 +142,31 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget _buildFAB() {
+    final isSettings = _currentIndex == 1;
+
     return Container(
       width: 64,
       height: 64,
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
+        gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFF5EBBF5), Color(0xFF2B7FE8)],
+          colors: isSettings
+              ? [
+                  const Color(0xFFE53935),
+                  const Color(0xFFD32F2F),
+                ] // Red gradient for logout
+              : [
+                  const Color(0xFF5EBBF5),
+                  const Color(0xFF2B7FE8),
+                ], // Blue gradient for add
         ),
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF2B7FE8).withOpacity(0.4),
+            color: isSettings
+                ? const Color(0x66E53935) // Red shadow
+                : const Color(0x662B7FE8), // Blue shadow
             blurRadius: 12,
             offset: const Offset(0, 6),
           ),
@@ -229,9 +178,15 @@ class _MainScreenState extends State<MainScreen> {
         onPressed: () {
           if (_currentIndex == 0) {
             _showAddTodoDialog();
+          } else {
+            _showLogoutDialog();
           }
         },
-        child: const Icon(Icons.add, size: 32, color: Colors.white),
+        child: Icon(
+          isSettings ? Icons.logout : Icons.add,
+          size: 32,
+          color: Colors.white,
+        ),
       ),
     );
   }
@@ -428,7 +383,25 @@ class _MainScreenState extends State<MainScreen> {
                       ),
                     );
                   });
+
                   Navigator.pop(context);
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        locale.taskAdded,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      backgroundColor: const Color(
+                        0xFF4CAF50,
+                      ), // Green for success
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -441,6 +414,59 @@ class _MainScreenState extends State<MainScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _showLogoutDialog() {
+    final locale = AppLocalizations.of(context);
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Text(
+          locale.logout,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        content: Text(locale.logoutConfirm),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              locale.cancel,
+              style: const TextStyle(color: Colors.grey),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              // Add your logout logic here
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    locale.logoutSuccess,
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  backgroundColor: Colors.red,
+                  behavior: SnackBarBehavior.floating,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  duration: const Duration(seconds: 2),
+                ),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: Text(locale.logout, style: TextStyle(color: Colors.white)),
+          ),
+        ],
       ),
     );
   }

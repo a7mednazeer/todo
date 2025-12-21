@@ -8,12 +8,12 @@ class SettingsScreen extends StatefulWidget {
   final Function(String) onLanguageChanged;
 
   const SettingsScreen({
-    Key? key,
+    super.key,
     required this.isDarkMode,
     required this.onThemeChanged,
     required this.currentLanguage,
     required this.onLanguageChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -140,7 +140,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ],
       ),
       child: DropdownButtonFormField<String>(
-        value: value,
+        initialValue: value,
         decoration: const InputDecoration(
           contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           border: InputBorder.none,
