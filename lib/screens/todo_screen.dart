@@ -492,7 +492,9 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
               locale.noTasksMessage,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: (Localizations.localeOf(context).languageCode == 'fr' || Localizations.localeOf(context).languageCode == 'ru')
+                    ? 14
+                    : 16,
                 color: isDark ? Colors.grey[400] : Colors.grey[600],
               ),
             ),

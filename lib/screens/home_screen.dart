@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:todo/classes/app_localizations.dart';
 import 'package:todo/classes/todo_item.dart';
@@ -16,14 +17,37 @@ class ToDoApp extends StatefulWidget {
 class _ToDoAppState extends State<ToDoApp> {
   bool isDarkMode = false;
   String currentLanguage = 'en';
+  // bool _isLoading = true;
 
-  void toggleTheme(bool value) {
+  @override
+  void initState() {
+    super.initState();
+    _loadPreferences();
+  }
+
+  // Load saved preferences
+  Future<void> _loadPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isDarkMode = prefs.getBool('isDarkMode') ?? false;
+      currentLanguage = prefs.getString('currentLanguage') ?? 'en';
+      // _isLoading = false;
+    });
+  }
+
+  // Save theme preference
+  Future<void> toggleTheme(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isDarkMode', value);
     setState(() {
       isDarkMode = value;
     });
   }
 
-  void changeLanguage(String languageCode) {
+  // Save language preference
+  Future<void> changeLanguage(String languageCode) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('currentLanguage', languageCode);
     setState(() {
       currentLanguage = languageCode;
     });
@@ -31,6 +55,20 @@ class _ToDoAppState extends State<ToDoApp> {
 
   @override
   Widget build(BuildContext context) {
+    // Show loading screen while preferences are being loaded
+    // if (_isLoading) {
+    //   return MaterialApp(
+    //     debugShowCheckedModeBanner: false,
+    //     home: Scaffold(
+    //       body: Center(
+    //         child: CircularProgressIndicator(
+    //           valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF5EBBF5)),
+    //         ),
+    //       ),
+    //     ),
+    //   );
+    // }
+
     return MaterialApp(
       title: 'ToDo List',
       debugShowCheckedModeBanner: false,
@@ -55,7 +93,12 @@ class _ToDoAppState extends State<ToDoApp> {
         Locale('hi'),
         Locale('zh'),
       ],
-
+      
+      builder: (context, child) {
+      // This ensures localization is available before building
+      return child ?? const SizedBox.shrink();
+    },
+    
       theme: ThemeData(
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: const Color(0xFFE8F4F8),
