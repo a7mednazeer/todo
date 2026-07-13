@@ -92,13 +92,16 @@ class _ToDoAppState extends State<ToDoApp> {
         Locale('tr'),
         Locale('hi'),
         Locale('zh'),
+        Locale('pt'),
+        Locale('nl'),
+        Locale('ko'),
       ],
-      
+
       builder: (context, child) {
-      // This ensures localization is available before building
-      return child ?? const SizedBox.shrink();
-    },
-    
+        // This ensures localization is available before building
+        return child ?? const SizedBox.shrink();
+      },
+
       theme: ThemeData(
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: const Color(0xFFE8F4F8),

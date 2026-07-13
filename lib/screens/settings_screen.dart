@@ -31,6 +31,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     'tr': 'Türkçe',
     'hi': 'हिन्दी',
     'zh': '中文',
+    'pt': 'Português',
+    'nl': 'Nederlands',
+    'ko': '한국어',
   };
 
   @override
@@ -128,12 +131,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
         color: isDark ? const Color(0xFF132F4C) : Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: const Color(0xFF5EBBF5).withOpacity(0.3),
+          color: const Color(0xFF5EBBF5).withValues(alpha: 0.3),
           width: 1.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(isDark ? 0.3 : 0.05),
+            color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),

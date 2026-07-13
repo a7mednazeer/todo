@@ -332,6 +332,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
     );
 
     if (pickedDate != null) {
+      if (!mounted) return;
       final TimeOfDay? pickedTime = await showTimePicker(
         context: context,
         initialTime: selectedTime,
@@ -350,6 +351,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
       );
 
       if (pickedTime != null) {
+        if (!mounted) return;
         setState(() {
           selectedDate = pickedDate;
           selectedTime = pickedTime;
