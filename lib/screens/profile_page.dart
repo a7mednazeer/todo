@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:todo/classes/error_handler.dart';
+import 'package:todo/classes/auth_service.dart';
 import 'package:todo/classes/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/classes/todo_item.dart';
@@ -24,146 +27,178 @@ class ProfilePage extends StatelessWidget {
     final subTextColor = isDark ? Colors.grey[400]! : Colors.grey[600]!;
     final borderColor = const Color(0xFF5EBBF5).withValues(alpha: 0.3);
 
+    final authService = AuthService();
+    final user = authService.currentUser;
+
     final completedTasks = todos.where((t) => t.isCompleted).length;
     final totalTasks = todos.length;
     final completionRate = totalTasks > 0 ? (completedTasks / totalTasks * 100).toInt() : 0;
 
-    return Column(
-      children: [
-        // Professional Header
-        Container(
-          width: double.infinity,
-          height: 240,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Color(0xFF2B7FE8), Color(0xFF5EBBF5)],
+    return StreamBuilder<DocumentSnapshot>(
+      stream: authService.userDataStream(user?.uid ?? ''),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Text(
+                ErrorHandler.getMessage(snapshot.error, context),
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.red),
+              ),
             ),
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(32),
-              bottomRight: Radius.circular(32),
-            ),
-          ),
-          child: SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircleAvatar(
-                  radius: 50,
-                  backgroundColor: Colors.white.withValues(alpha: 0.2),
-                  child: const Icon(Icons.person, size: 60, color: Colors.white),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'Ahmed Mohamed',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  'ahmed@example.com',
-                  style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.8),
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+          );
+        }
 
-        Expanded(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              children: [
-                // Statistics Row
-                Row(
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        final userData = snapshot.data?.data() as Map<String, dynamic>? ?? {};
+        final displayName = userData['name'] ?? user?.displayName ?? loc.noName;
+        final email = userData['email'] ?? user?.email ?? loc.noEmail;
+        final birthDate = userData['birthDate'] ?? loc.notSet;
+        final phone = userData['phone'] ?? loc.notSet;
+        final location = userData['location'] ?? loc.notSet;
+
+        return Column(
+          children: [
+            // Professional Header
+            Container(
+              width: double.infinity,
+              height: 240,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [Color(0xFF2B7FE8), Color(0xFF5EBBF5)],
+                ),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(32),
+                  bottomRight: Radius.circular(32),
+                ),
+              ),
+              child: SafeArea(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildStatCard(
-                      loc.completedStats,
-                      completedTasks.toString(),
-                      Icons.task_alt,
-                      const Color(0xFF4CAF50),
-                      cardColor,
-                      textColor,
-                      subTextColor,
+                    CircleAvatar(
+                      radius: 50,
+                      backgroundColor: Colors.white.withValues(alpha: 0.2),
+                      child: const Icon(Icons.person, size: 60, color: Colors.white),
                     ),
-                    const SizedBox(width: 16),
-                    _buildStatCard(
-                      loc.efficiency,
-                      '$completionRate%',
-                      Icons.speed,
-                      const Color(0xFFFFC107),
-                      cardColor,
-                      textColor,
-                      subTextColor,
+                    const SizedBox(height: 16),
+                    Text(
+                      displayName,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      email,
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.8),
+                        fontSize: 14,
+                      ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 24),
-
-                // Info Section
-                _buildSectionHeader(loc.personalInfo, textColor),
-                const SizedBox(height: 12),
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: cardColor,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: borderColor, width: 1),
-                  ),
-                  child: Column(
-                    children: [
-                      _buildInfoRow(Icons.calendar_today_outlined, loc.birthDate, '16 Aug 2002', subTextColor),
-                      const Divider(height: 24),
-                      _buildInfoRow(Icons.phone_outlined, loc.phone, '+20 123 456 789', subTextColor),
-                      const Divider(height: 24),
-                      _buildInfoRow(Icons.location_on_outlined, loc.location, 'Cairo, Egypt', subTextColor),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 24),
-
-                // Account Actions
-                _buildSectionHeader(loc.accountActions, textColor),
-                const SizedBox(height: 12),
-                _buildActionButton(
-                  icon: Icons.edit_outlined,
-                  label: loc.editProfile,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute<void>(
-                        builder: (context) => EditProfilePage(isDarkMode: isDark),
-                      ),
-                    );
-                  },
-                  isDark: isDark,
-                ),
-                const SizedBox(height: 12),
-                _buildActionButton(
-                  icon: Icons.lock_outline,
-                  label: loc.changePassword,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute<void>(
-                        builder: (context) => ChangePasswordPage(isDarkMode: isDark),
-                      ),
-                    );
-                  },
-                  isDark: isDark,
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ],
+
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  children: [
+                    // Statistics Row
+                    Row(
+                      children: [
+                        _buildStatCard(
+                          loc.completedStats,
+                          completedTasks.toString(),
+                          Icons.task_alt,
+                          const Color(0xFF4CAF50),
+                          cardColor,
+                          textColor,
+                          subTextColor,
+                        ),
+                        const SizedBox(width: 16),
+                        _buildStatCard(
+                          loc.efficiency,
+                          '$completionRate%',
+                          Icons.speed,
+                          const Color(0xFFFFC107),
+                          cardColor,
+                          textColor,
+                          subTextColor,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Info Section
+                    _buildSectionHeader(loc.personalInfo, textColor),
+                    const SizedBox(height: 12),
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: cardColor,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: borderColor, width: 1),
+                      ),
+                      child: Column(
+                        children: [
+                          _buildInfoRow(Icons.calendar_today_outlined, loc.birthDate, birthDate, subTextColor),
+                          const Divider(height: 24),
+                          _buildInfoRow(Icons.phone_outlined, loc.phone, phone, subTextColor),
+                          const Divider(height: 24),
+                          _buildInfoRow(Icons.location_on_outlined, loc.location, location, subTextColor),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    // Account Actions
+                    _buildSectionHeader(loc.accountActions, textColor),
+                    const SizedBox(height: 12),
+                    _buildActionButton(
+                      icon: Icons.edit_outlined,
+                      label: loc.editProfile,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (context) => EditProfilePage(isDarkMode: isDark),
+                          ),
+                        );
+                      },
+                      isDark: isDark,
+                    ),
+                    const SizedBox(height: 12),
+                    _buildActionButton(
+                      icon: Icons.lock_outline,
+                      label: loc.changePassword,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (context) => ChangePasswordPage(isDarkMode: isDark),
+                          ),
+                        );
+                      },
+                      isDark: isDark,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 

@@ -1,3 +1,5 @@
+import 'package:todo/classes/error_handler.dart';
+import 'package:todo/classes/auth_service.dart';
 import 'package:todo/classes/app_localizations.dart';
 import 'package:flutter/material.dart';
 
@@ -10,16 +12,96 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  final TextEditingController nameController = TextEditingController(text: 'Ahmed Mohamed');
-  final TextEditingController phoneController = TextEditingController(text: '+20 123 456 789');
-  final TextEditingController locationController = TextEditingController(text: 'Cairo, Egypt');
+  late TextEditingController nameController;
+  late TextEditingController phoneController;
+  late TextEditingController locationController;
+  late TextEditingController birthDateController;
+  final AuthService _authService = AuthService();
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    nameController = TextEditingController();
+    phoneController = TextEditingController();
+    locationController = TextEditingController();
+    birthDateController = TextEditingController();
+    _loadUserData();
+  }
+
+  void _loadUserData() async {
+    final user = _authService.currentUser;
+    if (user != null) {
+      // Default values from Firebase Auth
+      setState(() {
+        nameController.text = user.displayName ?? '';
+      });
+
+      try {
+        final doc = await _authService.getUserProfile(user.uid);
+        if (doc.exists) {
+          final data = doc.data() as Map<String, dynamic>;
+          setState(() {
+            nameController.text = data['name'] ?? user.displayName ?? '';
+            phoneController.text = data['phone'] ?? '';
+            locationController.text = data['location'] ?? '';
+            birthDateController.text = data['birthDate'] ?? '';
+          });
+        }
+      } catch (e) {
+        print("Error loading user data: $e");
+      }
+    }
+  }
 
   @override
   void dispose() {
     nameController.dispose();
     phoneController.dispose();
     locationController.dispose();
+    birthDateController.dispose();
     super.dispose();
+  }
+
+  void _handleSave() async {
+    if (nameController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context).errorNameEmpty)),
+      );
+      return;
+    }
+
+    setState(() => _isLoading = true);
+    try {
+      final user = _authService.currentUser;
+      if (user != null) {
+        await _authService.updateDisplayName(nameController.text);
+        await _authService.updateUserProfile(user.uid, {
+          'name': nameController.text,
+          'phone': phoneController.text,
+          'location': locationController.text,
+          'birthDate': birthDateController.text,
+        });
+      }
+      if (mounted) {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context).profileUpdated)),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(ErrorHandler.getMessage(e, context)),
+            backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
   }
 
   @override
@@ -101,6 +183,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
                   const SizedBox(height: 20),
                   _buildInputField(
+                    label: loc.birthDate,
+                    controller: birthDateController,
+                    icon: Icons.calendar_today_outlined,
+                    isDark: isDark,
+                    hint: 'DD/MM/YYYY',
+                  ),
+                  const SizedBox(height: 20),
+                  _buildInputField(
                     label: loc.phoneNumber,
                     controller: phoneController,
                     icon: Icons.phone_outlined,
@@ -122,19 +212,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
               width: double.infinity,
               height: 56,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(loc.profileUpdated)),
-                  );
-                },
+                onPressed: _isLoading ? null : _handleSave,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF2B7FE8),
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   elevation: 4,
                 ),
-                child: Text(loc.saveChanges, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                child: _isLoading
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : Text(loc.saveChanges, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               ),
             ),
           ],
@@ -148,6 +235,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     required TextEditingController controller,
     required IconData icon,
     required bool isDark,
+    String? hint,
     TextInputType keyboardType = TextInputType.text,
   }) {
     final subTextColor = isDark ? Colors.grey[400]! : Colors.grey[600]!;
@@ -163,6 +251,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           keyboardType: keyboardType,
           style: TextStyle(color: textColor, fontSize: 15),
           decoration: InputDecoration(
+            hintText: hint,
             prefixIcon: Icon(icon, color: const Color(0xFF2B7FE8), size: 20),
             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey.withValues(alpha: 0.3))),

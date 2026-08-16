@@ -71,7 +71,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                   _buildTitle(locale),
                   const SizedBox(height: 30),
                   _buildMonthYearSelector(locale),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 20),
                   _buildDateSelector(locale),
                   const SizedBox(height: 15),
                 ],
@@ -87,7 +87,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
   Widget _buildHeaderBackground() {
     return Container(
       width: double.infinity,
-      height: 310, // Increased to accommodate safe area and extra title padding
+      height: 330, // Increased to accommodate safe area and extra title padding
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,

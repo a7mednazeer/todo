@@ -1,3 +1,5 @@
+import 'package:todo/classes/error_handler.dart';
+import 'package:todo/classes/auth_service.dart';
 import 'package:todo/screens/signup_page.dart';
 import 'package:todo/screens/forgot_password_page.dart';
 import 'package:todo/classes/app_localizations.dart';
@@ -15,15 +17,67 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final AuthService _authService = AuthService();
 
   bool _obscurePassword = true;
   bool _rememberMe = false;
+  bool _isLoading = false;
 
   @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
+  }
+
+  void _handleLogin() async {
+    if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context).errorFillAllFields)),
+      );
+      return;
+    }
+
+    setState(() => _isLoading = true);
+    try {
+      final userCredential = await _authService.signIn(emailController.text, passwordController.text);
+      
+      // Ensure Firestore document exists
+      if (userCredential?.user != null) {
+        final doc = await _authService.getUserProfile(userCredential!.user!.uid);
+        if (!doc.exists) {
+          await _authService.createUserProfile(userCredential.user!.uid, {
+            'name': userCredential.user!.displayName ?? '',
+            'email': userCredential.user!.email ?? '',
+            'birthDate': '',
+            'phone': '',
+            'location': '',
+          });
+        }
+      }
+      // Main screen will be shown by StreamBuilder in home_screen.dart
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.error_outline, color: Colors.white),
+                const SizedBox(width: 12),
+                Expanded(child: Text(ErrorHandler.getMessage(e, context))),
+              ],
+            ),
+            backgroundColor: Colors.redAccent,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            margin: const EdgeInsets.all(12),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
   }
 
   @override
@@ -213,7 +267,7 @@ class _LoginPageState extends State<LoginPage> {
                     width: double.infinity,
                     height: 56,
                     child: ElevatedButton(
-                      onPressed: widget.onLogin,
+                      onPressed: _isLoading ? null : _handleLogin,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF2B7FE8),
                         foregroundColor: Colors.white,
@@ -223,13 +277,15 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: Text(
-                        loc.login,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      child: _isLoading
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : Text(
+                              loc.login,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                     ),
                   ),
 

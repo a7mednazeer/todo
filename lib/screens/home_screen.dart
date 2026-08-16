@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:todo/classes/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -5,9 +7,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:todo/classes/app_localizations.dart';
 import 'package:todo/classes/todo_item.dart';
 import 'package:todo/screens/settings_screen.dart';
+import 'package:todo/classes/error_handler.dart';
 import 'package:todo/screens/todo_screen.dart';
 import 'package:todo/screens/login_page.dart';
 import 'package:todo/screens/profile_page.dart';
+import 'package:todo/screens/edit_profile_page.dart';
 
 class ToDoApp extends StatefulWidget {
   const ToDoApp({super.key});
@@ -19,8 +23,7 @@ class ToDoApp extends StatefulWidget {
 class _ToDoAppState extends State<ToDoApp> {
   bool isDarkMode = false;
   String currentLanguage = 'en';
-  bool _isLoggedIn = false;
-  // bool _isLoading = true;
+  final AuthService _authService = AuthService();
 
   @override
   void initState() {
@@ -34,7 +37,6 @@ class _ToDoAppState extends State<ToDoApp> {
     setState(() {
       isDarkMode = prefs.getBool('isDarkMode') ?? false;
       currentLanguage = prefs.getString('currentLanguage') ?? 'en';
-      // _isLoading = false;
     });
   }
 
@@ -58,32 +60,16 @@ class _ToDoAppState extends State<ToDoApp> {
 
   @override
   Widget build(BuildContext context) {
-    // Show loading screen while preferences are being loaded
-    // if (_isLoading) {
-    //   return MaterialApp(
-    //     debugShowCheckedModeBanner: false,
-    //     home: Scaffold(
-    //       body: Center(
-    //         child: CircularProgressIndicator(
-    //           valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF5EBBF5)),
-    //         ),
-    //       ),
-    //     ),
-    //   );
-    // }
-
     return MaterialApp(
       title: 'ToDo List',
       debugShowCheckedModeBanner: false,
       locale: Locale(currentLanguage),
-
       localizationsDelegates: const [
         AppLocalizationsDelegate(),
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-
       supportedLocales: const [
         Locale('en'),
         Locale('ar'),
@@ -99,12 +85,9 @@ class _ToDoAppState extends State<ToDoApp> {
         Locale('nl'),
         Locale('ko'),
       ],
-
       builder: (context, child) {
-        // This ensures localization is available before building
         return child ?? const SizedBox.shrink();
       },
-
       theme: ThemeData(
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: const Color(0xFFE8F4F8),
@@ -118,27 +101,45 @@ class _ToDoAppState extends State<ToDoApp> {
         brightness: Brightness.dark,
       ),
       themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
-
-      home: _isLoggedIn
-          ? MainScreen(
+      home: StreamBuilder<User?>(
+        stream: _authService.userStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Scaffold(
+              body: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Text(
+                    ErrorHandler.getMessage(snapshot.error, context),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                ),
+              ),
+            );
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
+          if (snapshot.hasData) {
+            return MainScreen(
               isDarkMode: isDarkMode,
               onThemeChanged: toggleTheme,
               currentLanguage: currentLanguage,
               onLanguageChanged: changeLanguage,
-              onLogout: () {
-                setState(() {
-                  _isLoggedIn = false;
-                });
+              onLogout: () async {
+                await _authService.signOut();
               },
-            )
-          : LoginPage(
-              isDarkMode: isDarkMode,
-              onLogin: () {
-                setState(() {
-                  _isLoggedIn = true;
-                });
-              },
-            ),
+            );
+          }
+          return LoginPage(
+            isDarkMode: isDarkMode,
+            onLogin: () {}, // Handled by AuthService inside LoginPage
+          );
+        },
+      ),
     );
   }
 }
@@ -212,7 +213,8 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget _buildFAB() {
-    final isLogout = _currentIndex == 2;
+    final isProfile = _currentIndex == 1;
+    final isSettings = _currentIndex == 2;
 
     return Container(
       width: 64,
@@ -221,7 +223,7 @@ class _MainScreenState extends State<MainScreen> {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: isLogout
+          colors: isSettings
               ? [
                   const Color(0xFFE53935),
                   const Color(0xFFD32F2F),
@@ -229,12 +231,12 @@ class _MainScreenState extends State<MainScreen> {
               : [
                   const Color(0xFF5EBBF5),
                   const Color(0xFF2B7FE8),
-                ], // Blue gradient for add
+                ], // Blue gradient for add/edit
         ),
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: isLogout
+            color: isSettings
                 ? const Color(0x66E53935) // Red shadow
                 : const Color(0x662B7FE8), // Blue shadow
             blurRadius: 12,
@@ -246,14 +248,23 @@ class _MainScreenState extends State<MainScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         onPressed: () {
-          if (_currentIndex == 0 || _currentIndex == 1) {
+          if (_currentIndex == 0) {
             _showAddTodoDialog();
+          } else if (_currentIndex == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                builder: (context) => EditProfilePage(isDarkMode: widget.isDarkMode),
+              ),
+            );
           } else {
             _showLogoutDialog();
           }
         },
         child: Icon(
-          isLogout ? Icons.logout : Icons.add,
+          isSettings
+              ? Icons.logout
+              : (isProfile ? Icons.edit : Icons.add),
           size: 32,
           color: Colors.white,
         ),
