@@ -6,6 +6,7 @@ import 'package:todo/classes/app_localizations.dart';
 import 'package:todo/classes/todo_item.dart';
 import 'package:todo/screens/settings_screen.dart';
 import 'package:todo/screens/todo_screen.dart';
+import 'package:todo/screens/login_page.dart';
 
 class ToDoApp extends StatefulWidget {
   const ToDoApp({super.key});
@@ -17,6 +18,7 @@ class ToDoApp extends StatefulWidget {
 class _ToDoAppState extends State<ToDoApp> {
   bool isDarkMode = false;
   String currentLanguage = 'en';
+  bool _isLoggedIn = false;
   // bool _isLoading = true;
 
   @override
@@ -116,12 +118,26 @@ class _ToDoAppState extends State<ToDoApp> {
       ),
       themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
 
-      home: MainScreen(
-        isDarkMode: isDarkMode,
-        onThemeChanged: toggleTheme,
-        currentLanguage: currentLanguage,
-        onLanguageChanged: changeLanguage,
-      ),
+      home: _isLoggedIn
+          ? MainScreen(
+              isDarkMode: isDarkMode,
+              onThemeChanged: toggleTheme,
+              currentLanguage: currentLanguage,
+              onLanguageChanged: changeLanguage,
+              onLogout: () {
+                setState(() {
+                  _isLoggedIn = false;
+                });
+              },
+            )
+          : LoginPage(
+              isDarkMode: isDarkMode,
+              onLogin: () {
+                setState(() {
+                  _isLoggedIn = true;
+                });
+              },
+            ),
     );
   }
 }
@@ -131,6 +147,7 @@ class MainScreen extends StatefulWidget {
   final Function(bool) onThemeChanged;
   final String currentLanguage;
   final Function(String) onLanguageChanged;
+  final VoidCallback onLogout;
 
   const MainScreen({
     super.key,
@@ -138,6 +155,7 @@ class MainScreen extends StatefulWidget {
     required this.onThemeChanged,
     required this.currentLanguage,
     required this.onLanguageChanged,
+    required this.onLogout,
   });
 
   @override
@@ -487,7 +505,7 @@ class _MainScreenState extends State<MainScreen> {
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
-              // Add your logout logic here
+              widget.onLogout();
 
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
