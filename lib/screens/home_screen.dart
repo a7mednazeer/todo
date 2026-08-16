@@ -7,6 +7,7 @@ import 'package:todo/classes/todo_item.dart';
 import 'package:todo/screens/settings_screen.dart';
 import 'package:todo/screens/todo_screen.dart';
 import 'package:todo/screens/login_page.dart';
+import 'package:todo/screens/profile_page.dart';
 
 class ToDoApp extends StatefulWidget {
   const ToDoApp({super.key});
@@ -193,12 +194,17 @@ class _MainScreenState extends State<MainScreen> {
               },
               isDarkMode: isDark,
             )
-          : SettingsScreen(
-              isDarkMode: isDark,
-              onThemeChanged: widget.onThemeChanged,
-              currentLanguage: widget.currentLanguage,
-              onLanguageChanged: widget.onLanguageChanged,
-            ),
+          : _currentIndex == 1
+              ? ProfilePage(
+                  isDarkMode: isDark,
+                  todos: todos,
+                )
+              : SettingsScreen(
+                  isDarkMode: isDark,
+                  onThemeChanged: widget.onThemeChanged,
+                  currentLanguage: widget.currentLanguage,
+                  onLanguageChanged: widget.onLanguageChanged,
+                ),
       floatingActionButton: _buildFAB(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: _buildBottomBar(isDark),
@@ -206,7 +212,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget _buildFAB() {
-    final isSettings = _currentIndex == 1;
+    final isLogout = _currentIndex == 2;
 
     return Container(
       width: 64,
@@ -215,7 +221,7 @@ class _MainScreenState extends State<MainScreen> {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: isSettings
+          colors: isLogout
               ? [
                   const Color(0xFFE53935),
                   const Color(0xFFD32F2F),
@@ -228,7 +234,7 @@ class _MainScreenState extends State<MainScreen> {
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: isSettings
+            color: isLogout
                 ? const Color(0x66E53935) // Red shadow
                 : const Color(0x662B7FE8), // Blue shadow
             blurRadius: 12,
@@ -240,14 +246,14 @@ class _MainScreenState extends State<MainScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         onPressed: () {
-          if (_currentIndex == 0) {
+          if (_currentIndex == 0 || _currentIndex == 1) {
             _showAddTodoDialog();
           } else {
             _showLogoutDialog();
           }
         },
         child: Icon(
-          isSettings ? Icons.logout : Icons.add,
+          isLogout ? Icons.logout : Icons.add,
           size: 32,
           color: Colors.white,
         ),
@@ -263,7 +269,7 @@ class _MainScreenState extends State<MainScreen> {
       notchMargin: 8,
       child: Container(
         height: 60,
-        padding: const EdgeInsets.symmetric(horizontal: 32),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -282,19 +288,38 @@ class _MainScreenState extends State<MainScreen> {
               },
             ),
             const SizedBox(width: 64),
-            IconButton(
-              icon: Icon(
-                Icons.settings_outlined,
-                color: _currentIndex == 1
-                    ? const Color(0xFF5EBBF5)
-                    : (isDark ? Colors.grey[600] : Colors.grey[400]),
-                size: 28,
-              ),
-              onPressed: () {
-                setState(() {
-                  _currentIndex = 1;
-                });
-              },
+            Row(
+              children: [
+                IconButton(
+                  icon: Icon(
+                    Icons.person_outline,
+                    color: _currentIndex == 1
+                        ? const Color(0xFF5EBBF5)
+                        : (isDark ? Colors.grey[600] : Colors.grey[400]),
+                    size: 28,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _currentIndex = 1;
+                    });
+                  },
+                ),
+                const SizedBox(width: 16),
+                IconButton(
+                  icon: Icon(
+                    Icons.settings_outlined,
+                    color: _currentIndex == 2
+                        ? const Color(0xFF5EBBF5)
+                        : (isDark ? Colors.grey[600] : Colors.grey[400]),
+                    size: 28,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _currentIndex = 2;
+                    });
+                  },
+                ),
+              ],
             ),
           ],
         ),
