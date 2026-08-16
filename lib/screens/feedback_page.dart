@@ -50,7 +50,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
     final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
       path: 'feedback@todoapp.com',
-      query: 'subject=${Uri.encodeComponent("App Feedback: $localizedType")}&body=${Uri.encodeComponent(_feedbackController.text)}',
+      query: 'subject=${Uri.encodeComponent("${loc.appFeedback}: $localizedType")}&body=${Uri.encodeComponent(_feedbackController.text)}',
     );
 
     if (await canLaunchUrl(emailLaunchUri)) {

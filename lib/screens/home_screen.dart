@@ -7,6 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:todo/classes/app_localizations.dart';
 import 'package:todo/classes/todo_item.dart';
 import 'package:todo/screens/settings_screen.dart';
+import 'package:todo/classes/todo_service.dart';
 import 'package:todo/classes/error_handler.dart';
 import 'package:todo/screens/todo_screen.dart';
 import 'package:todo/screens/login_page.dart';
@@ -61,7 +62,7 @@ class _ToDoAppState extends State<ToDoApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'ToDo List',
+      onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
       debugShowCheckedModeBanner: false,
       locale: Locale(currentLanguage),
       localizationsDelegates: const [
@@ -166,49 +167,44 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
-  List<TodoItem> todos = [
-    // TodoItem(
-    //   title: 'Play basketball',
-    //   details: 'Play basketball at the local court',
-    //   time: const TimeOfDay(hour: 11, minute: 30),
-    //   date: DateTime.now(),
-    //   isCompleted: false,
-    // ),
-  ];
+  final TodoService _todoService = TodoService();
+  final AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
     final isDark = widget.isDarkMode;
-    // final locale = AppLocalizations.of(context);
+    final userId = _authService.currentUser?.uid ?? '';
 
-    return Scaffold(
-      backgroundColor: isDark
-          ? const Color(0xFF0A1929)
-          : const Color(0xFFE8F4F8),
-      body: _currentIndex == 0
-          ? ToDoListScreen(
-              todos: todos,
-              onTodosChanged: (updatedTodos) {
-                setState(() {
-                  todos = updatedTodos;
-                });
-              },
-              isDarkMode: isDark,
-            )
-          : _currentIndex == 1
-              ? ProfilePage(
-                  isDarkMode: isDark,
+    return StreamBuilder<List<TodoItem>>(
+      stream: _todoService.getTodos(userId),
+      builder: (context, snapshot) {
+        final todos = snapshot.data ?? [];
+
+        return Scaffold(
+          backgroundColor: isDark
+              ? const Color(0xFF0A1929)
+              : const Color(0xFFE8F4F8),
+          body: _currentIndex == 0
+              ? ToDoListScreen(
                   todos: todos,
-                )
-              : SettingsScreen(
                   isDarkMode: isDark,
-                  onThemeChanged: widget.onThemeChanged,
-                  currentLanguage: widget.currentLanguage,
-                  onLanguageChanged: widget.onLanguageChanged,
-                ),
-      floatingActionButton: _buildFAB(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: _buildBottomBar(isDark),
+                )
+              : _currentIndex == 1
+                  ? ProfilePage(
+                      isDarkMode: isDark,
+                      todos: todos,
+                    )
+                  : SettingsScreen(
+                      isDarkMode: isDark,
+                      onThemeChanged: widget.onThemeChanged,
+                      currentLanguage: widget.currentLanguage,
+                      onLanguageChanged: widget.onLanguageChanged,
+                    ),
+          floatingActionButton: _buildFAB(),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          bottomNavigationBar: _buildBottomBar(isDark),
+        );
+      },
     );
   }
 
@@ -470,37 +466,46 @@ class _MainScreenState extends State<MainScreen> {
               child: Text(locale.cancel, style: TextStyle(color: Colors.grey)),
             ),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (titleController.text.isNotEmpty) {
-                  setState(() {
-                    todos.add(
-                      TodoItem(
-                        title: titleController.text,
-                        details: detailsController.text,
-                        time: selectedTime,
-                        date: selectedDate,
-                        isCompleted: false,
-                      ),
-                    );
-                  });
+                  final userId = _authService.currentUser?.uid ?? '';
+                  final newTask = TodoItem(
+                    title: titleController.text,
+                    details: detailsController.text,
+                    time: selectedTime,
+                    date: selectedDate,
+                    isCompleted: false,
+                  );
 
-                  Navigator.pop(context);
-
+                  try {
+                    await _todoService.addTodo(userId, newTask);
+                    if (context.mounted) {
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            locale.taskAdded,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          backgroundColor: const Color(0xFF4CAF50),
+                          behavior: SnackBarBehavior.floating,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                  } catch (e) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(ErrorHandler.getMessage(e, context))),
+                      );
+                    }
+                  }
+                } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        locale.taskAdded,
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                      backgroundColor: const Color(
-                        0xFF4CAF50,
-                      ), // Green for success
-                      behavior: SnackBarBehavior.floating,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      duration: const Duration(seconds: 2),
-                    ),
+                    SnackBar(content: Text(locale.errorFillAllFields)),
                   );
                 }
               },

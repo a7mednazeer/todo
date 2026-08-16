@@ -204,7 +204,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         _buildInputField(
                           label: loc.birthDate,
                           controller: birthController,
-                          hint: 'DD/MM/YYYY',
+                          hint: loc.birthDateHint,
                           icon: Icons.cake_outlined,
                           isDark: isDark,
                         ),

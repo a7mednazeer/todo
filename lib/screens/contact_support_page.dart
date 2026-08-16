@@ -33,7 +33,7 @@ class _ContactSupportPageState extends State<ContactSupportPage> {
     final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
       path: 'support@todoapp.com',
-      query: 'subject=${Uri.encodeComponent(_subjectController.text.isEmpty ? "Support Request" : _subjectController.text)}&body=${Uri.encodeComponent(_messageController.text)}',
+      query: 'subject=${Uri.encodeComponent(_subjectController.text.isEmpty ? loc.supportRequest : _subjectController.text)}&body=${Uri.encodeComponent(_messageController.text)}',
     );
 
     if (await canLaunchUrl(emailLaunchUri)) {

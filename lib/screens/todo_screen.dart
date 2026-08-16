@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:todo/classes/error_handler.dart';
+import 'package:todo/classes/auth_service.dart';
+import 'package:todo/classes/todo_service.dart';
 import 'package:todo/classes/app_localizations.dart';
 import 'package:todo/classes/todo_item.dart';
 import 'package:todo/screens/edit_screen.dart';
 
 class ToDoListScreen extends StatefulWidget {
   final List<TodoItem> todos;
-  final Function(List<TodoItem>) onTodosChanged;
   final bool isDarkMode;
 
   const ToDoListScreen({
     super.key,
     required this.todos,
-    required this.onTodosChanged,
     required this.isDarkMode,
   });
 
@@ -23,6 +24,8 @@ class ToDoListScreen extends StatefulWidget {
 class _ToDoListScreenState extends State<ToDoListScreen> {
   int selectedDayIndex = 1;
   bool _isDeleteDialogOpen = false;
+  final TodoService _todoService = TodoService();
+  final AuthService _authService = AuthService();
 
   // ignore: unused_field
   DateTime _focusedDay = DateTime.now();
@@ -69,7 +72,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
               child: Column(
                 children: [
                   _buildTitle(locale),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 20),
                   _buildMonthYearSelector(locale),
                   const SizedBox(height: 20),
                   _buildDateSelector(locale),
@@ -87,7 +90,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
   Widget _buildHeaderBackground() {
     return Container(
       width: double.infinity,
-      height: 330, // Increased to accommodate safe area and extra title padding
+      height: 300, // Increased to accommodate safe area and extra title padding
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -103,17 +106,14 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
   }
 
   Widget _buildTitle(AppLocalizations locale) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 25), // Increased to clear centered camera notch
-      child: Text(
-        locale.appTitle,
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 34,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-          letterSpacing: 0.5,
-        ),
+    return Text(
+      locale.appTitle,
+      textAlign: TextAlign.center,
+      style: const TextStyle(
+        fontSize: 30,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+        letterSpacing: 0.5,
       ),
     );
   }
@@ -622,10 +622,8 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
           );
 
           if (result != null && result is TodoItem) {
-            setState(() {
-              widget.todos[index] = result;
-            });
-            widget.onTodosChanged(widget.todos);
+            final userId = _authService.currentUser?.uid ?? '';
+            await _todoService.updateTodo(userId, result);
           }
         },
         child: Container(
@@ -736,12 +734,9 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      widget.todos[index].isCompleted =
-                          !widget.todos[index].isCompleted;
-                    });
-                    widget.onTodosChanged(widget.todos);
+                  onTap: () async {
+                    final userId = _authService.currentUser?.uid ?? '';
+                    await _todoService.toggleComplete(userId, todo.id, todo.isCompleted);
                   },
                   child: todo.isCompleted
                       ? Container(
@@ -830,28 +825,39 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
             ),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
+              final userId = _authService.currentUser?.uid ?? '';
+              final taskId = widget.todos[index].id;
+              
               Navigator.pop(context);
-              setState(() {
-                widget.todos.removeAt(index);
-              });
-              widget.onTodosChanged(widget.todos);
+              
+              try {
+                await _todoService.deleteTodo(userId, taskId);
+                
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        locale.taskDeleted,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      backgroundColor: Colors.red,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                }
+              } catch (e) {
+                if (context.mounted) {
+                   ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(ErrorHandler.getMessage(e, context))),
+                  );
+                }
+              }
               _isDeleteDialogOpen = false;
-
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    locale.taskDeleted,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  backgroundColor: Colors.red,
-                  behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  duration: const Duration(seconds: 2),
-                ),
-              );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
@@ -859,7 +865,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            child: Text(locale.delete, style: TextStyle(color: Colors.white)),
+            child: Text(locale.delete, style: const TextStyle(color: Colors.white)),
           ),
         ],
       ),

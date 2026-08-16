@@ -187,7 +187,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     controller: birthDateController,
                     icon: Icons.calendar_today_outlined,
                     isDark: isDark,
-                    hint: 'DD/MM/YYYY',
+                    hint: loc.birthDateHint,
                   ),
                   const SizedBox(height: 20),
                   _buildInputField(

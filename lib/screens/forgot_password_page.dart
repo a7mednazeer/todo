@@ -23,9 +23,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   }
 
   void _handleReset() async {
+    final loc = AppLocalizations.of(context);
     if (emailController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter your email')),
+        SnackBar(content: Text(loc.errorEnterEmail)),
       );
       return;
     }

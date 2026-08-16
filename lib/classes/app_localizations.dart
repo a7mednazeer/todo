@@ -182,6 +182,9 @@ class AppLocalizations {
       'err_connection_failed': 'Could not connect to the server. Please check your internet or restart the app.',
       'err_unexpected': 'An unexpected error occurred. Please try again.',
       'err_current_password_incorrect': 'The current password you entered is incorrect.',
+      'support_request': 'Support Request',
+      'app_feedback': 'App Feedback',
+      'birth_date_hint': 'DD/MM/YYYY',
     },
     'ar': {
       'no_tasks': 'لا توجد مهام بعد',
@@ -354,6 +357,9 @@ class AppLocalizations {
       'err_connection_failed': 'تعذر الاتصال بالخادم. يرجى التحقق من الإنترنت أو إعادة تشغيل التطبيق.',
       'err_unexpected': 'حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.',
       'err_current_password_incorrect': 'كلمة المرور الحالية التي أدخلتها غير صحيحة.',
+      'support_request': 'طلب دعم',
+      'app_feedback': 'ملاحظات التطبيق',
+      'birth_date_hint': 'يوم/شهر/سنة',
     },
     'es': {
       'no_tasks': 'No Hay Tareas',
@@ -526,6 +532,9 @@ class AppLocalizations {
       'err_connection_failed': 'No se pudo conectar al servidor. Por favor, compruebe su internet o reinicie la aplicación.',
       'err_unexpected': 'Ocurrió un error inesperado. Por favor, inténtelo de nuevo.',
       'err_current_password_incorrect': 'La contraseña actual que ingresó es incorrecta.',
+      'support_request': 'Solicitud de Soporte',
+      'app_feedback': 'Comentarios de la Aplicación',
+      'birth_date_hint': 'DD/MM/AAAA',
     },
     'fr': {
       'no_tasks': 'Aucune Tâche',
@@ -698,6 +707,9 @@ class AppLocalizations {
       'err_connection_failed': 'Impossible de se connecter au serveur. Veuillez vérifier votre connexion internet ou redémarrer l\'application.',
       'err_unexpected': 'Une erreur inattendue s\'est produite. Veuillez réessayer.',
       'err_current_password_incorrect': 'Le mot de passe actuel que vous avez saisi est incorrect.',
+      'support_request': 'Demande d\'Assistance',
+      'app_feedback': 'Commentaires sur l\'Application',
+      'birth_date_hint': 'JJ/MM/AAAA',
     },
     'de': {
       'no_tasks': 'Keine Aufgaben',
@@ -870,6 +882,9 @@ class AppLocalizations {
       'err_connection_failed': 'Verbindung zum Server konnte nicht hergestellt werden. Bitte überprüfen Sie Ihr Internet oder starten Sie die App neu.',
       'err_unexpected': 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.',
       'err_current_password_incorrect': 'Das eingegebene aktuelle Passwort ist falsch.',
+      'support_request': 'Support-Anfrage',
+      'app_feedback': 'App-Feedback',
+      'birth_date_hint': 'TT.MM.JJJJ',
     },
     'it': {
       'no_tasks': 'Nessuna Attività',
@@ -1042,6 +1057,9 @@ class AppLocalizations {
       'err_connection_failed': 'Impossibile connettersi al server. Controlla internet o riavvia l\'app.',
       'err_unexpected': 'Si è verificato un errore imprevisto. Riprova.',
       'err_current_password_incorrect': 'La password attuale inserita non è corretta.',
+      'support_request': 'Richiesta di Supporto',
+      'app_feedback': 'Feedback sull\'App',
+      'birth_date_hint': 'GG/MM/AAAA',
     },
     'ru': {
       'no_tasks': 'Нет Задач',
@@ -1214,6 +1232,9 @@ class AppLocalizations {
       'err_connection_failed': 'Не удалось подключиться к серверу. Проверьте интернет или перезапустите приложение.',
       'err_unexpected': 'Произошла непредвиденная ошибка. Пожалуйста, попробуйте снова.',
       'err_current_password_incorrect': 'Введенный вами текущий пароль неверен.',
+      'support_request': 'Запрос в поддержку',
+      'app_feedback': 'Отзыв о приложении',
+      'birth_date_hint': 'ДД.ММ.ГГГГ',
     },
     'tr': {
       'no_tasks': 'Görev Yok',
@@ -1386,6 +1407,9 @@ class AppLocalizations {
       'err_connection_failed': 'Sunucuya bağlanılamadı. Lütfen internetinizi kontrol edin veya uygulamayı yeniden başlatın.',
       'err_unexpected': 'Beklenmedik bir hata oluştu. Lütfen tekrar deneyin.',
       'err_current_password_incorrect': 'Girdiğiniz mevcut şifre yanlış.',
+      'support_request': 'Destek Talebi',
+      'app_feedback': 'Uygulama Geri Bildirimi',
+      'birth_date_hint': 'GG/AA/YYYY',
     },
     'hi': {
       'no_tasks': 'कोई कार्य नहीं',
@@ -1558,6 +1582,9 @@ class AppLocalizations {
       'err_connection_failed': 'सर्वर से कनेक्ट नहीं हो सका। कृपया अपना इंटरनेट जांचें या ऐप पुनरारंभ करें।',
       'err_unexpected': 'एक अप्रत्याशित त्रुटि हुई। कृपया पुनः प्रयास करें।',
       'err_current_password_incorrect': 'आपके द्वारा दर्ज किया गया वर्तमान पासवर्ड गलत है।',
+      'support_request': 'सहायता अनुरोध',
+      'app_feedback': 'ऐप फीडबैक',
+      'birth_date_hint': 'DD/MM/YYYY',
     },
     'zh': {
       'no_tasks': '暂无任务',
@@ -1730,6 +1757,9 @@ class AppLocalizations {
       'err_connection_failed': '无法连接到服务器。请检查您的网络或重启应用。',
       'err_unexpected': '发生意外错误。请再试一次。',
       'err_current_password_incorrect': '您输入的当前密码不正确。',
+      'support_request': '支持请求',
+      'app_feedback': '应用反馈',
+      'birth_date_hint': '日/月/年',
     },
     'pt': {
       'no_tasks': 'Nenhuma Tarefa',
@@ -1902,6 +1932,9 @@ class AppLocalizations {
       'err_connection_failed': 'Não foi possível conectar ao servidor. Verifique sua internet ou reinicie o aplicativo.',
       'err_unexpected': 'Ocorreu um inesperado erro. Por favor, tente novamente.',
       'err_current_password_incorrect': 'A senha atual que você digitou está incorreta.',
+      'support_request': 'Solicitação de Suporte',
+      'app_feedback': 'Feedback do Aplicativo',
+      'birth_date_hint': 'DD/MM/AAAA',
     },
     'nl': {
       'no_tasks': 'Geen Taken',
@@ -2074,6 +2107,9 @@ class AppLocalizations {
       'err_connection_failed': 'Kan geen verbinding maken met de server. Controleer uw internet of start de app opnieuw op.',
       'err_unexpected': 'Er is een onverwachte fout opgetreden. Probeer het opnieuw.',
       'err_current_password_incorrect': 'Het huidige wachtwoord dat u hebt ingevoerd is onjuist.',
+      'support_request': 'Ondersteuningsverzoek',
+      'app_feedback': 'App-feedback',
+      'birth_date_hint': 'DD-MM-JJJJ',
     },
     'ko': {
       'no_tasks': '할 일 없음',
@@ -2246,6 +2282,9 @@ class AppLocalizations {
       'err_connection_failed': '서버에 연결할 수 없습니다. 인터넷을 확인하거나 앱을 다시 시작해주세요.',
       'err_unexpected': '예기치 않은 오류가 발생했습니다. 다시 시도해주세요.',
       'err_current_password_incorrect': '입력한 현재 비밀번호가 올바르지 않습니다.',
+      'support_request': '지원 요청',
+      'app_feedback': '앱 피드백',
+      'birth_date_hint': 'YYYY/MM/DD',
     },
   };
 
@@ -2383,6 +2422,9 @@ class AppLocalizations {
   String get feedbackOther => _localizedValues[languageCode]!['feedback_other']!;
   String get termsOfServiceContent => _localizedValues[languageCode]!['terms_of_service_content']!;
   String get privacyPolicyContent => _localizedValues[languageCode]!['privacy_policy_content']!;
+  String get supportRequest => _localizedValues[languageCode]!['support_request']!;
+  String get appFeedback => _localizedValues[languageCode]!['app_feedback']!;
+  String get birthDateHint => _localizedValues[languageCode]!['birth_date_hint']!;
 
   String get noName => _localizedValues[languageCode]!['no_name']!;
   String get noEmail => _localizedValues[languageCode]!['no_email']!;

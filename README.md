@@ -12,9 +12,10 @@ A professional, feature-rich, and fully localized task management application bu
 
 ### 🛠 Task Management
 - **Intuitive UI**: Organize daily tasks with a beautiful, gradient-based header and clear task cards.
+- **Real-Time Sync**: Fully integrated with **Cloud Firestore**. Your tasks are synchronized instantly across all devices.
 - **Date Selector**: Dynamic horizontal calendar for quick navigation between dates.
 - **Gestures**: Swipe-to-delete functionality with confirmation dialogs.
-- **Offline First**: Your tasks are saved locally, ensuring lightning-fast performance even without internet.
+- **Intelligent FAB**: A context-aware Floating Action Button that changes icons and functionality based on your current screen (Add Task / Edit Profile / Logout).
 
 ### 🌎 Global Localization (13 Languages)
 Fully translated UI and system messages for:
@@ -53,7 +54,7 @@ Fully translated UI and system messages for:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/todo-app.git
+   git clone https://github.com/a7mednazeer/todo.git
    ```
 
 2. **Install dependencies**:
@@ -80,13 +81,16 @@ Fully translated UI and system messages for:
 lib/
 ├── classes/
 │   ├── app_localizations.dart   # Centralized 13-language translation engine
-│   ├── auth_service.dart        # Firebase Auth & Firestore logic
+│   ├── auth_service.dart        # Firebase Authentication controller
+│   ├── todo_service.dart        # Cloud Firestore task synchronization
 │   ├── chat_matcher.dart        # Trigram-based chatbot logic
-│   ├── error_handler.dart       # Human-readable error translations
+│   ├── error_handler.dart       # Human-readable localized error translations
 │   └── faq_catalog.dart         # Localized knowledge base structure
 ├── screens/
 │   ├── login_page.dart          # Secure entry point
 │   ├── profile_page.dart        # Real-time synced user dashboard
+│   ├── edit_profile_page.dart   # Profile management
+│   ├── change_password_page.dart# Secure password updates
 │   ├── settings_screen.dart     # Language and Theme management
 │   ├── todo_screen.dart         # Main task interaction layer
 │   └── help_center_page.dart    # Chatbot & FAQ support
@@ -98,8 +102,8 @@ lib/
 ## 📜 Legal
 
 This application includes a fully localized **Privacy Policy** and **Terms of Service**.
-- **Privacy**: We prioritize local storage. User data is never sold or tracked by third parties.
-- **Data**: Users own their data. Since the app is offline-first, users are responsible for maintaining their local device data.
+- **Privacy**: We prioritize data security. All tasks and profile details are stored securely in your private Firebase instance.
+- **Data Ownership**: Users own their data. The application uses an offline-first cache strategy combined with real-time cloud persistence.
 
 ---
 

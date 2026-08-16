@@ -362,6 +362,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
 
   void _saveChanges() {
     final updatedTodo = TodoItem(
+      id: widget.todo.id,
       title: titleController.text,
       details: detailsController.text,
       time: selectedTime,
