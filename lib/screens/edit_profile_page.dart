@@ -1,3 +1,4 @@
+import 'package:todo/classes/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class EditProfilePage extends StatefulWidget {
@@ -23,6 +24,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     final isDark = widget.isDarkMode;
     final backgroundColor = isDark ? const Color(0xFF0A1929) : const Color(0xFFF5F9FF);
     final cardColor = isDark ? const Color(0xFF132F4C) : Colors.white;
@@ -33,7 +35,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        title: const Text('Edit Profile', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+        title: Text(loc.editProfile, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -92,14 +94,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
               child: Column(
                 children: [
                   _buildInputField(
-                    label: 'Full Name',
+                    label: loc.fullName,
                     controller: nameController,
                     icon: Icons.person_outline,
                     isDark: isDark,
                   ),
                   const SizedBox(height: 20),
                   _buildInputField(
-                    label: 'Phone Number',
+                    label: loc.phoneNumber,
                     controller: phoneController,
                     icon: Icons.phone_outlined,
                     isDark: isDark,
@@ -107,7 +109,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
                   const SizedBox(height: 20),
                   _buildInputField(
-                    label: 'Location',
+                    label: loc.location,
                     controller: locationController,
                     icon: Icons.location_on_outlined,
                     isDark: isDark,
@@ -123,7 +125,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 onPressed: () {
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Profile updated successfully!')),
+                    SnackBar(content: Text(loc.profileUpdated)),
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -132,7 +134,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   elevation: 4,
                 ),
-                child: const Text('Save Changes', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                child: Text(loc.saveChanges, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               ),
             ),
           ],

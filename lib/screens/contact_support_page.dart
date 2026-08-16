@@ -1,3 +1,4 @@
+import 'package:todo/classes/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -21,9 +22,10 @@ class _ContactSupportPageState extends State<ContactSupportPage> {
   }
 
   void _sendEmail() async {
+    final loc = AppLocalizations.of(context);
     if (_messageController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a message')),
+        SnackBar(content: Text(loc.enterMessageError)),
       );
       return;
     }
@@ -40,7 +42,7 @@ class _ContactSupportPageState extends State<ContactSupportPage> {
     } else {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not open email app')),
+          SnackBar(content: Text(loc.emailError)),
         );
       }
     }
@@ -48,6 +50,7 @@ class _ContactSupportPageState extends State<ContactSupportPage> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     final isDark = widget.isDarkMode;
     final backgroundColor = isDark ? const Color(0xFF0A1929) : const Color(0xFFF5F9FF);
     final cardColor = isDark ? const Color(0xFF132F4C) : Colors.white;
@@ -58,7 +61,7 @@ class _ContactSupportPageState extends State<ContactSupportPage> {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        title: const Text('Contact Support', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+        title: Text(loc.contactSupport, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -77,9 +80,9 @@ class _ContactSupportPageState extends State<ContactSupportPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Get in Touch', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: textColor)),
+            Text(loc.getInTouch, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: textColor)),
             const SizedBox(height: 8),
-            Text('Describe your issue and we will get back to you as soon as possible.', style: TextStyle(fontSize: 14, color: subTextColor)),
+            Text(loc.contactMessagePrompt, style: TextStyle(fontSize: 14, color: subTextColor)),
             const SizedBox(height: 32),
             Container(
               padding: const EdgeInsets.all(20),
@@ -88,14 +91,14 @@ class _ContactSupportPageState extends State<ContactSupportPage> {
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: borderColor, width: 1),
                 boxShadow: [
-                  BoxShadow(color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.05), blurRadius: 15, offset: const Offset(0, 5)),
+                  BoxShadow(color: Colors.black.withValues(alpha: 0.3), blurRadius: 15, offset: const Offset(0, 5)),
                 ],
               ),
               child: Column(
                 children: [
-                  _buildInputField(label: 'Subject (Optional)', controller: _subjectController, hint: 'e.g. Bug report, Feature request', isDark: isDark),
+                  _buildInputField(label: loc.subject, controller: _subjectController, hint: loc.subjectHint, isDark: isDark),
                   const SizedBox(height: 24),
-                  _buildInputField(label: 'Message', controller: _messageController, hint: 'How can we help you?', isDark: isDark, maxLines: 5),
+                  _buildInputField(label: loc.message, controller: _messageController, hint: loc.messageHint, isDark: isDark, maxLines: 5),
                 ],
               ),
             ),
@@ -111,7 +114,7 @@ class _ContactSupportPageState extends State<ContactSupportPage> {
                   elevation: 4,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
-                child: const Text('Send Message', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                child: Text(loc.sendMessage, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               ),
             ),
           ],

@@ -1,3 +1,4 @@
+import 'package:todo/classes/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -11,7 +12,7 @@ class FeedbackPage extends StatefulWidget {
 
 class _FeedbackPageState extends State<FeedbackPage> {
   final TextEditingController _feedbackController = TextEditingController();
-  String _selectedType = 'Suggestion';
+  String _selectedType = 'feedback_suggestion';
 
   @override
   void dispose() {
@@ -20,17 +21,36 @@ class _FeedbackPageState extends State<FeedbackPage> {
   }
 
   void _sendFeedback() async {
+    final loc = AppLocalizations.of(context);
     if (_feedbackController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter your feedback')),
+        SnackBar(content: Text(loc.enterFeedbackError)),
       );
       return;
+    }
+
+    String localizedType;
+    switch (_selectedType) {
+      case 'feedback_suggestion':
+        localizedType = loc.feedbackSuggestion;
+        break;
+      case 'feedback_bug':
+        localizedType = loc.feedbackBug;
+        break;
+      case 'feedback_compliment':
+        localizedType = loc.feedbackCompliment;
+        break;
+      case 'feedback_other':
+        localizedType = loc.feedbackOther;
+        break;
+      default:
+        localizedType = _selectedType;
     }
 
     final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
       path: 'feedback@todoapp.com',
-      query: 'subject=${Uri.encodeComponent("App Feedback: $_selectedType")}&body=${Uri.encodeComponent(_feedbackController.text)}',
+      query: 'subject=${Uri.encodeComponent("App Feedback: $localizedType")}&body=${Uri.encodeComponent(_feedbackController.text)}',
     );
 
     if (await canLaunchUrl(emailLaunchUri)) {
@@ -39,7 +59,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
     } else {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not open email app')),
+          SnackBar(content: Text(loc.emailError)),
         );
       }
     }
@@ -47,6 +67,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     final isDark = widget.isDarkMode;
     final backgroundColor = isDark ? const Color(0xFF0A1929) : const Color(0xFFF5F9FF);
     final cardColor = isDark ? const Color(0xFF132F4C) : Colors.white;
@@ -57,7 +78,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        title: const Text('Send Feedback', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+        title: Text(loc.sendFeedback, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -76,9 +97,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('We Value Your Feedback', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: textColor)),
+            Text(loc.valueFeedback, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: textColor)),
             const SizedBox(height: 8),
-            Text('Tell us how we can make the ToDo App even better for you.', style: TextStyle(fontSize: 14, color: subTextColor)),
+            Text(loc.feedbackPrompt, style: TextStyle(fontSize: 14, color: subTextColor)),
             const SizedBox(height: 32),
             Container(
               padding: const EdgeInsets.all(20),
@@ -87,24 +108,24 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: borderColor, width: 1),
                 boxShadow: [
-                  BoxShadow(color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.05), blurRadius: 15, offset: const Offset(0, 5)),
+                  BoxShadow(color: Colors.black.withValues(alpha: 0.3), blurRadius: 15, offset: const Offset(0, 5)),
                 ],
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Feedback Type', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: isDark ? Colors.grey[400] : Colors.grey[600])),
+                  Text(loc.feedbackType, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: isDark ? Colors.grey[400] : Colors.grey[600])),
                   const SizedBox(height: 8),
                   _buildDropdown(isDark),
                   const SizedBox(height: 24),
-                  Text('Your Feedback', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: isDark ? Colors.grey[400] : Colors.grey[600])),
+                  Text(loc.sendFeedback, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: isDark ? Colors.grey[400] : Colors.grey[600])),
                   const SizedBox(height: 8),
                   TextField(
                     controller: _feedbackController,
                     maxLines: 6,
                     style: TextStyle(color: isDark ? Colors.white : Colors.black87, fontSize: 15),
                     decoration: InputDecoration(
-                      hintText: 'Share your thoughts, suggestions or issues...',
+                      hintText: loc.shareThoughtsHint,
                       hintStyle: TextStyle(color: Colors.grey[500], fontSize: 14),
                       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                       enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.grey.withValues(alpha: 0.3))),
@@ -126,7 +147,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                   elevation: 4,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
-                child: const Text('Submit Feedback', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                child: Text(loc.submitFeedback, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               ),
             ),
           ],
@@ -136,6 +157,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
   }
 
   Widget _buildDropdown(bool isDark) {
+    final loc = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
@@ -149,8 +171,30 @@ class _FeedbackPageState extends State<FeedbackPage> {
           isExpanded: true,
           dropdownColor: isDark ? const Color(0xFF132F4C) : Colors.white,
           style: TextStyle(color: isDark ? Colors.white : Colors.black87, fontSize: 15),
-          items: ['Suggestion', 'Bug Report', 'Compliment', 'Other'].map((String value) {
-            return DropdownMenuItem<String>(value: value, child: Text(value));
+          items: [
+            'feedback_suggestion',
+            'feedback_bug',
+            'feedback_compliment',
+            'feedback_other'
+          ].map((String key) {
+            String label;
+            switch (key) {
+              case 'feedback_suggestion':
+                label = loc.feedbackSuggestion;
+                break;
+              case 'feedback_bug':
+                label = loc.feedbackBug;
+                break;
+              case 'feedback_compliment':
+                label = loc.feedbackCompliment;
+                break;
+              case 'feedback_other':
+                label = loc.feedbackOther;
+                break;
+              default:
+                label = key;
+            }
+            return DropdownMenuItem<String>(value: key, child: Text(label));
           }).toList(),
           onChanged: (newValue) {
             setState(() {

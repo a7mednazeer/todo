@@ -80,11 +80,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   isDark: isDark,
                 ),
                 const SizedBox(height: 32),
-                _buildSectionHeader('Support & About', isDark),
+                _buildSectionHeader(locale.supportAbout, isDark),
                 const SizedBox(height: 12),
                 _buildMenuTile(
                   icon: Icons.help_center_outlined,
-                  title: 'Help Center',
+                  title: locale.helpCenter,
                   onTap: () {
                     Navigator.push(
                       context,

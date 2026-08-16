@@ -1,3 +1,4 @@
+import 'package:todo/classes/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/classes/todo_item.dart';
 import 'package:todo/screens/edit_profile_page.dart';
@@ -15,6 +16,7 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     final isDark = isDarkMode;
     final backgroundColor = isDark ? const Color(0xFF0A1929) : const Color(0xFFF5F9FF);
     final cardColor = isDark ? const Color(0xFF132F4C) : Colors.white;
@@ -82,17 +84,17 @@ class ProfilePage extends StatelessWidget {
                 Row(
                   children: [
                     _buildStatCard(
-                      'Completed',
+                      loc.completedStats,
                       completedTasks.toString(),
                       Icons.task_alt,
                       const Color(0xFF4CAF50),
                       cardColor,
                       textColor,
-                      subTextColor!,
+                      subTextColor,
                     ),
                     const SizedBox(width: 16),
                     _buildStatCard(
-                      'Efficiency',
+                      loc.efficiency,
                       '$completionRate%',
                       Icons.speed,
                       const Color(0xFFFFC107),
@@ -105,7 +107,7 @@ class ProfilePage extends StatelessWidget {
                 const SizedBox(height: 24),
 
                 // Info Section
-                _buildSectionHeader('Personal Information', textColor),
+                _buildSectionHeader(loc.personalInfo, textColor),
                 const SizedBox(height: 12),
                 Container(
                   padding: const EdgeInsets.all(16),
@@ -116,11 +118,11 @@ class ProfilePage extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      _buildInfoRow(Icons.calendar_today_outlined, 'Birth Date', '16 Aug 2002', subTextColor),
+                      _buildInfoRow(Icons.calendar_today_outlined, loc.birthDate, '16 Aug 2002', subTextColor),
                       const Divider(height: 24),
-                      _buildInfoRow(Icons.phone_outlined, 'Phone', '+20 123 456 789', subTextColor),
+                      _buildInfoRow(Icons.phone_outlined, loc.phone, '+20 123 456 789', subTextColor),
                       const Divider(height: 24),
-                      _buildInfoRow(Icons.location_on_outlined, 'Location', 'Cairo, Egypt', subTextColor),
+                      _buildInfoRow(Icons.location_on_outlined, loc.location, 'Cairo, Egypt', subTextColor),
                     ],
                   ),
                 ),
@@ -128,11 +130,11 @@ class ProfilePage extends StatelessWidget {
                 const SizedBox(height: 24),
 
                 // Account Actions
-                _buildSectionHeader('Account Actions', textColor),
+                _buildSectionHeader(loc.accountActions, textColor),
                 const SizedBox(height: 12),
                 _buildActionButton(
                   icon: Icons.edit_outlined,
-                  label: 'Edit Profile',
+                  label: loc.editProfile,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -146,7 +148,7 @@ class ProfilePage extends StatelessWidget {
                 const SizedBox(height: 12),
                 _buildActionButton(
                   icon: Icons.lock_outline,
-                  label: 'Change Password',
+                  label: loc.changePassword,
                   onTap: () {
                     Navigator.push(
                       context,

@@ -1,3 +1,4 @@
+import 'package:todo/classes/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -31,6 +32,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     final isDark = widget.isDarkMode;
     final backgroundColor = isDark ? const Color(0xFF0A1929) : const Color(0xFFF5F9FF);
     final cardColor = isDark ? const Color(0xFF132F4C) : Colors.white;
@@ -67,22 +69,22 @@ class _SignUpPageState extends State<SignUpPage> {
                       onPressed: () => Navigator.pop(context),
                     ),
                   ),
-                  const Center(
+                  Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Create Account',
-                          style: TextStyle(
+                          loc.createAccount,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
-                          'Join our community today',
-                          style: TextStyle(
+                          loc.signupPrompt,
+                          style: const TextStyle(
                             color: Colors.white70,
                             fontSize: 14,
                           ),
@@ -119,9 +121,9 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: Column(
                       children: [
                         _buildInputField(
-                          label: 'Full Name',
+                          label: loc.fullName,
                           controller: nameController,
-                          hint: 'Enter your name',
+                          hint: loc.nameHint,
                           icon: Icons.person_outline,
                           isDark: isDark,
                           inputFormatters: [
@@ -130,15 +132,15 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         const SizedBox(height: 20),
                         _buildInputField(
-                          label: 'Email',
+                          label: loc.email,
                           controller: emailController,
-                          hint: 'Enter your email',
+                          hint: loc.emailHint,
                           icon: Icons.email_outlined,
                           isDark: isDark,
                         ),
                         const SizedBox(height: 20),
                         _buildInputField(
-                          label: 'Birth Date',
+                          label: loc.birthDate,
                           controller: birthController,
                           hint: 'DD/MM/YYYY',
                           icon: Icons.cake_outlined,
@@ -146,9 +148,9 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         const SizedBox(height: 20),
                         _buildInputField(
-                          label: 'Password',
+                          label: loc.password,
                           controller: passwordController,
-                          hint: 'Create a password',
+                          hint: loc.passwordHint,
                           icon: Icons.lock_outline,
                           isDark: isDark,
                           isPassword: true,
@@ -161,9 +163,9 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         const SizedBox(height: 20),
                         _buildInputField(
-                          label: 'Confirm Password',
+                          label: loc.confirmPassword,
                           controller: confirmPasswordController,
-                          hint: 'Repeat your password',
+                          hint: loc.repeatPasswordHint,
                           icon: Icons.lock_reset_outlined,
                           isDark: isDark,
                           isPassword: true,
@@ -188,8 +190,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       onPressed: () {
                         if (passwordController.text != confirmPasswordController.text) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Passwords do not match!'),
+                            SnackBar(
+                              content: Text(loc.passwordsNotMatch),
                               backgroundColor: Colors.red,
                             ),
                           );
@@ -206,9 +208,9 @@ class _SignUpPageState extends State<SignUpPage> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: const Text(
-                        'Sign Up',
-                        style: TextStyle(
+                      child: Text(
+                        loc.signUp,
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -224,14 +226,14 @@ class _SignUpPageState extends State<SignUpPage> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          "Already have an account? ",
+                          loc.alreadyHaveAccount,
                           style: TextStyle(color: subTextColor),
                         ),
                         GestureDetector(
                           onTap: () => Navigator.pop(context),
-                          child: const Text(
-                            'Sign In',
-                            style: TextStyle(
+                          child: Text(
+                            loc.signIn,
+                            style: const TextStyle(
                               color: Color(0xFF2B7FE8),
                               fontWeight: FontWeight.bold,
                             ),

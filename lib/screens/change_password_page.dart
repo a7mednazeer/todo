@@ -1,3 +1,4 @@
+import 'package:todo/classes/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class ChangePasswordPage extends StatefulWidget {
@@ -27,6 +28,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     final isDark = widget.isDarkMode;
     final backgroundColor = isDark ? const Color(0xFF0A1929) : const Color(0xFFF5F9FF);
     final cardColor = isDark ? const Color(0xFF132F4C) : Colors.white;
@@ -37,7 +39,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        title: const Text('Change Password', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+        title: Text(loc.changePassword, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -58,12 +60,12 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           children: [
             const SizedBox(height: 20),
             Text(
-              'Security',
+              loc.security,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: textColor),
             ),
             const SizedBox(height: 8),
             Text(
-              'Manage your password and security settings.',
+              loc.securityPrompt,
               style: TextStyle(fontSize: 14, color: subTextColor),
             ),
             const SizedBox(height: 32),
@@ -84,7 +86,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               child: Column(
                 children: [
                   _buildInputField(
-                    label: 'Current Password',
+                    label: loc.currentPassword,
                     controller: currentPasswordController,
                     icon: Icons.lock_outline,
                     isDark: isDark,
@@ -94,7 +96,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   ),
                   const SizedBox(height: 20),
                   _buildInputField(
-                    label: 'New Password',
+                    label: loc.newPassword,
                     controller: newPasswordController,
                     icon: Icons.lock_reset_outlined,
                     isDark: isDark,
@@ -104,7 +106,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   ),
                   const SizedBox(height: 20),
                   _buildInputField(
-                    label: 'Confirm New Password',
+                    label: loc.confirmNewPassword,
                     controller: confirmPasswordController,
                     icon: Icons.lock_reset_outlined,
                     isDark: isDark,
@@ -123,13 +125,13 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 onPressed: () {
                   if (newPasswordController.text != confirmPasswordController.text) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Passwords do not match!'), backgroundColor: Colors.red),
+                      SnackBar(content: Text(loc.passwordsNotMatch), backgroundColor: Colors.red),
                     );
                     return;
                   }
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Password changed successfully!')),
+                    SnackBar(content: Text(loc.passwordChanged)),
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -138,7 +140,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   elevation: 4,
                 ),
-                child: const Text('Update Password', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                child: Text(loc.changePassword, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               ),
             ),
           ],

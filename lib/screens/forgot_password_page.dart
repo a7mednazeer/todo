@@ -1,3 +1,4 @@
+import 'package:todo/classes/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
@@ -19,6 +20,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     final isDark = widget.isDarkMode;
     final backgroundColor = isDark ? const Color(0xFF0A1929) : const Color(0xFFF5F9FF);
     final cardColor = isDark ? const Color(0xFF132F4C) : Colors.white;
@@ -56,19 +58,19 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       onPressed: () => Navigator.pop(context),
                     ),
                   ),
-                  const Center(
+                  Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.lock_reset,
                           color: Colors.white,
                           size: 50,
                         ),
-                        SizedBox(height: 12),
+                        const SizedBox(height: 12),
                         Text(
-                          'Reset Password',
-                          style: TextStyle(
+                          loc.resetPassword,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -89,7 +91,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Forgot Password?',
+                    loc.forgotPasswordQuestion,
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -98,7 +100,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    "Enter the email address associated with your account and we'll send you a link to reset your password.",
+                    loc.forgotPasswordMessage,
                     style: TextStyle(
                       fontSize: 15,
                       color: subTextColor,
@@ -123,9 +125,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       ],
                     ),
                     child: _buildInputField(
-                      label: 'Email',
+                      label: loc.email,
                       controller: emailController,
-                      hint: 'Enter your email',
+                      hint: loc.emailHint,
                       icon: Icons.email_outlined,
                       isDark: isDark,
                     ),
@@ -140,7 +142,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     child: ElevatedButton(
                       onPressed: () {
                         // Handle password reset logic
-                        _showSuccessDialog(context);
+                        _showSuccessDialog(context, loc);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF2B7FE8),
@@ -151,9 +153,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: const Text(
-                        'Send Link',
-                        style: TextStyle(
+                      child: Text(
+                        loc.sendLink,
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -211,20 +213,20 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     );
   }
 
-  void _showSuccessDialog(BuildContext context) {
+  void _showSuccessDialog(BuildContext context, AppLocalizations loc) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text('Email Sent'),
-        content: const Text('A password reset link has been sent to your email address.'),
+        title: Text(loc.emailSentTitle),
+        content: Text(loc.emailSentMessage),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.pop(context); // Close dialog
               Navigator.pop(context); // Go back to login
             },
-            child: const Text('OK', style: TextStyle(color: Color(0xFF2B7FE8))),
+            child: Text(loc.ok, style: const TextStyle(color: Color(0xFF2B7FE8))),
           ),
         ],
       ),

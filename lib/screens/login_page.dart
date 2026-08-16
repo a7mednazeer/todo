@@ -1,5 +1,6 @@
 import 'package:todo/screens/signup_page.dart';
 import 'package:todo/screens/forgot_password_page.dart';
+import 'package:todo/classes/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -27,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     final isDark = widget.isDarkMode;
     final backgroundColor = isDark ? const Color(0xFF0A1929) : const Color(0xFFF5F9FF);
     final cardColor = isDark ? const Color(0xFF132F4C) : Colors.white;
@@ -53,19 +55,19 @@ class _LoginPageState extends State<LoginPage> {
                 bottomRight: Radius.circular(32),
               ),
             ),
-            child: const SafeArea(
+            child: SafeArea(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.check_circle_outline,
                     color: Colors.white,
                     size: 60,
                   ),
                   SizedBox(height: 12),
                   Text(
-                    'ToDo List',
-                    style: TextStyle(
+                    loc.appTitle,
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
@@ -84,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Sign In',
+                    loc.signIn,
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -93,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Please login to continue using the app',
+                    loc.loginPrompt,
                     style: TextStyle(
                       fontSize: 14,
                       color: subTextColor,
@@ -120,17 +122,17 @@ class _LoginPageState extends State<LoginPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildInputField(
-                          label: 'Email',
+                          label: loc.email,
                           controller: emailController,
-                          hint: 'Enter your email',
+                          hint: loc.emailHint,
                           icon: Icons.email_outlined,
                           isDark: isDark,
                         ),
                         const SizedBox(height: 20),
                         _buildInputField(
-                          label: 'Password',
+                          label: loc.password,
                           controller: passwordController,
-                          hint: 'Enter your password',
+                          hint: loc.passwordHint,
                           icon: Icons.lock_outline,
                           isDark: isDark,
                           isPassword: true,
@@ -166,7 +168,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  'Remember me',
+                                  loc.rememberMe,
                                   style: TextStyle(
                                     color: subTextColor,
                                     fontSize: 13,
@@ -189,9 +191,9 @@ class _LoginPageState extends State<LoginPage> {
                                 minimumSize: Size.zero,
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               ),
-                              child: const Text(
-                                'Forgot Password?',
-                                style: TextStyle(
+                              child: Text(
+                                loc.forgotPasswordQuestion,
+                                style: const TextStyle(
                                   color: Color(0xFF2B7FE8),
                                   fontSize: 13,
                                   fontWeight: FontWeight.w600,
@@ -221,9 +223,9 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: const Text(
-                        'Login',
-                        style: TextStyle(
+                      child: Text(
+                        loc.login,
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -239,7 +241,7 @@ class _LoginPageState extends State<LoginPage> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          "Don't have an account? ",
+                          loc.noAccount,
                           style: TextStyle(color: subTextColor),
                         ),
                         GestureDetector(
@@ -251,9 +253,9 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             );
                           },
-                          child: const Text(
-                            'Sign Up',
-                            style: TextStyle(
+                          child: Text(
+                            loc.signUp,
+                            style: const TextStyle(
                               color: Color(0xFF2B7FE8),
                               fontWeight: FontWeight.bold,
                             ),
