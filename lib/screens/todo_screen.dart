@@ -63,41 +63,54 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
       children: [
         Stack(
           children: [
-            _buildHeader(locale),
-            Padding(
-              padding: const EdgeInsets.only(top: 75),
-              child: _buildMonthYearSelector(locale),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 200),
-              child: _buildDateSelector(locale),
+            _buildHeaderBackground(),
+            SafeArea(
+              bottom: false,
+              child: Column(
+                children: [
+                  _buildTitle(locale),
+                  const SizedBox(height: 30),
+                  _buildMonthYearSelector(locale),
+                  const SizedBox(height: 10),
+                  _buildDateSelector(locale),
+                  const SizedBox(height: 15),
+                ],
+              ),
             ),
           ],
         ),
-
         Expanded(child: _buildTodoList()),
       ],
     );
   }
 
-  Widget _buildHeader(AppLocalizations locale) {
+  Widget _buildHeaderBackground() {
     return Container(
       width: double.infinity,
-      height: 250,
+      height: 310, // Increased to accommodate safe area and extra title padding
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [Color(0xFF2B7FE8), Color(0xFF5EBBF5)],
         ),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(32),
+          bottomRight: Radius.circular(32),
+        ),
       ),
-      padding: const EdgeInsets.only(top: 20),
+    );
+  }
+
+  Widget _buildTitle(AppLocalizations locale) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 25), // Increased to clear centered camera notch
       child: Text(
         locale.appTitle,
         textAlign: TextAlign.center,
         style: const TextStyle(
-          fontSize: 30,
-          fontWeight: FontWeight.w600,
+          fontSize: 34,
+          fontWeight: FontWeight.bold,
           color: Colors.white,
           letterSpacing: 0.5,
         ),
@@ -213,9 +226,8 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 15),
           _buildTodayButton(locale),
-          const SizedBox(height: 20),
         ],
       ),
     );
