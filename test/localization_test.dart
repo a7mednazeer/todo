@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:todo/classes/app_localizations.dart';
+import 'package:todo/core/localization/app_localizations.dart';
 
 void main() {
   group('AppLocalizations Tests', () {
@@ -26,6 +26,14 @@ void main() {
       
       expect(localizations.appTitle, 'Lista de Tareas');
       expect(localizations.signIn, 'Iniciar Sesión');
+    });
+
+    test('Profile Photo keys are localized', () {
+      const locale = Locale('en');
+      final localizations = AppLocalizations(locale.languageCode);
+      
+      expect(localizations.profilePhotoUrl, 'Profile Photo URL');
+      expect(localizations.photoUrlHint.isNotEmpty, true);
     });
 
     test('Supported locales list contains all 13 languages', () {

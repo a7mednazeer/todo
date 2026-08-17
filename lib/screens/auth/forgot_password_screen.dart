@@ -1,17 +1,17 @@
-import 'package:todo/classes/error_handler.dart';
-import 'package:todo/classes/auth_service.dart';
-import 'package:todo/classes/app_localizations.dart';
+import 'package:todo/core/errors/error_handler.dart';
+import 'package:todo/services/auth_service.dart';
+import 'package:todo/core/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 
-class ForgotPasswordPage extends StatefulWidget {
+class ForgotPasswordScreen extends StatefulWidget {
   final bool isDarkMode;
-  const ForgotPasswordPage({super.key, required this.isDarkMode});
+  const ForgotPasswordScreen({super.key, required this.isDarkMode});
 
   @override
-  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
 }
 
-class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final TextEditingController emailController = TextEditingController();
   final AuthService _authService = AuthService();
   bool _isLoading = false;

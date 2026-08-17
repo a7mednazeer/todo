@@ -1,17 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:todo/classes/error_handler.dart';
-import 'package:todo/classes/auth_service.dart';
-import 'package:todo/classes/app_localizations.dart';
+import 'package:todo/core/errors/error_handler.dart';
+import 'package:todo/services/auth_service.dart';
+import 'package:todo/core/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:todo/classes/todo_item.dart';
-import 'package:todo/screens/edit_profile_page.dart';
-import 'package:todo/screens/change_password_page.dart';
+import 'package:todo/models/todo_model.dart';
+import 'package:todo/screens/profile/edit_profile_screen.dart';
+import 'package:todo/screens/auth/change_password_screen.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfileScreen extends StatelessWidget {
   final bool isDarkMode;
   final List<TodoItem> todos;
 
-  const ProfilePage({
+  const ProfileScreen({
     super.key,
     required this.isDarkMode,
     required this.todos,
@@ -21,7 +21,6 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
     final isDark = isDarkMode;
-    final backgroundColor = isDark ? const Color(0xFF0A1929) : const Color(0xFFF5F9FF);
     final cardColor = isDark ? const Color(0xFF132F4C) : Colors.white;
     final textColor = isDark ? Colors.white : const Color(0xFF1A1A1A);
     final subTextColor = isDark ? Colors.grey[400]! : Colors.grey[600]!;
@@ -60,6 +59,7 @@ class ProfilePage extends StatelessWidget {
         final birthDate = userData['birthDate'] ?? loc.notSet;
         final phone = userData['phone'] ?? loc.notSet;
         final location = userData['location'] ?? loc.notSet;
+        final photoUrl = userData['photoUrl'] ?? '';
 
         return Column(
           children: [
@@ -85,7 +85,17 @@ class ProfilePage extends StatelessWidget {
                     CircleAvatar(
                       radius: 50,
                       backgroundColor: Colors.white.withValues(alpha: 0.2),
-                      child: const Icon(Icons.person, size: 60, color: Colors.white),
+                      child: photoUrl.isNotEmpty
+                          ? ClipOval(
+                              child: Image.network(
+                                photoUrl,
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) => const Icon(Icons.person, size: 60, color: Colors.white),
+                              ),
+                            )
+                          : const Icon(Icons.person, size: 60, color: Colors.white),
                     ),
                     const SizedBox(height: 16),
                     Text(
@@ -172,7 +182,7 @@ class ProfilePage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute<void>(
-                            builder: (context) => EditProfilePage(isDarkMode: isDark),
+                            builder: (context) => EditProfileScreen(isDarkMode: isDark),
                           ),
                         );
                       },
@@ -186,7 +196,7 @@ class ProfilePage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute<void>(
-                            builder: (context) => ChangePasswordPage(isDarkMode: isDark),
+                            builder: (context) => ChangePasswordScreen(isDarkMode: isDark),
                           ),
                         );
                       },

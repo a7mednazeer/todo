@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:todo/classes/error_handler.dart';
-import 'package:todo/classes/auth_service.dart';
-import 'package:todo/classes/todo_service.dart';
-import 'package:todo/classes/app_localizations.dart';
-import 'package:todo/classes/todo_item.dart';
-import 'package:todo/screens/edit_screen.dart';
+import 'package:todo/core/errors/error_handler.dart';
+import 'package:todo/services/auth_service.dart';
+import 'package:todo/services/todo_service.dart';
+import 'package:todo/core/localization/app_localizations.dart';
+import 'package:todo/models/todo_model.dart';
+import 'package:todo/screens/todo/edit_task_screen.dart';
 
-class ToDoListScreen extends StatefulWidget {
+class TodoListScreen extends StatefulWidget {
   final List<TodoItem> todos;
   final bool isDarkMode;
 
-  const ToDoListScreen({
+  const TodoListScreen({
     super.key,
     required this.todos,
     required this.isDarkMode,
   });
 
   @override
-  State<ToDoListScreen> createState() => _ToDoListScreenState();
+  State<TodoListScreen> createState() => _TodoListScreenState();
 }
 
-class _ToDoListScreenState extends State<ToDoListScreen> {
+class _TodoListScreenState extends State<TodoListScreen> {
   int selectedDayIndex = 1;
   bool _isDeleteDialogOpen = false;
   final TodoService _todoService = TodoService();
@@ -521,44 +521,6 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
               ),
             ),
             const SizedBox(height: 32),
-            // Action button hint
-            // Container(
-            //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            //   decoration: BoxDecoration(
-            //     gradient: const LinearGradient(
-            //       begin: Alignment.topLeft,
-            //       end: Alignment.bottomRight,
-            //       colors: [Color(0xFF2B7FE8), Color(0xFF5EBBF5)],
-            //     ),
-            //     borderRadius: BorderRadius.circular(30),
-            //     boxShadow: [
-            //       BoxShadow(
-            //         color: const Color(0x4D2B7FE8),
-            //         blurRadius: 12,
-            //         offset: const Offset(0, 6),
-            //       ),
-            //     ],
-            //   ),
-            //   child: Row(
-            //     mainAxisSize: MainAxisSize.min,
-            //     children: [
-            //       const Icon(
-            //         Icons.add_circle_outline,
-            //         color: Colors.white,
-            //         size: 20,
-            //       ),
-            //       const SizedBox(width: 8),
-            //       Text(
-            //         locale.addNewTask,
-            //         style: const TextStyle(
-            //           color: Colors.white,
-            //           fontSize: 14,
-            //           fontWeight: FontWeight.w600,
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
           ],
         ),
       );

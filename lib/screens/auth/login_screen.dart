@@ -1,73 +1,61 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:todo/classes/error_handler.dart';
-import 'package:todo/classes/auth_service.dart';
-import 'package:todo/classes/app_localizations.dart';
+import 'package:todo/core/errors/error_handler.dart';
+import 'package:todo/services/auth_service.dart';
+import 'package:todo/screens/auth/signup_screen.dart';
+import 'package:todo/screens/auth/forgot_password_screen.dart';
+import 'package:todo/core/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-class SignUpPage extends StatefulWidget {
+class LoginScreen extends StatefulWidget {
   final bool isDarkMode;
-  const SignUpPage({super.key, required this.isDarkMode});
+  final VoidCallback onLogin;
+  const LoginScreen({super.key, required this.isDarkMode, required this.onLogin});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController birthController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
   final AuthService _authService = AuthService();
 
   bool _obscurePassword = true;
-  bool _obscureConfirmPassword = true;
+  bool _rememberMe = false;
   bool _isLoading = false;
 
   @override
   void dispose() {
     emailController.dispose();
-    nameController.dispose();
-    birthController.dispose();
     passwordController.dispose();
-    confirmPasswordController.dispose();
     super.dispose();
   }
 
-  void _handleSignUp() async {
-    final loc = AppLocalizations.of(context);
-    if (emailController.text.isEmpty || nameController.text.isEmpty || passwordController.text.isEmpty) {
+  void _handleLogin() async {
+    if (emailController.text.isEmpty || passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(loc.errorFillAllFields)),
-      );
-      return;
-    }
-
-    if (passwordController.text != confirmPasswordController.text) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(loc.passwordsNotMatch), backgroundColor: Colors.red),
+        SnackBar(content: Text(AppLocalizations.of(context).errorFillAllFields)),
       );
       return;
     }
 
     setState(() => _isLoading = true);
     try {
-      final userCredential = await _authService.signUp(emailController.text, passwordController.text);
+      final userCredential = await _authService.signIn(emailController.text, passwordController.text);
+      
+      // Ensure Firestore document exists
       if (userCredential?.user != null) {
-        await _authService.updateDisplayName(nameController.text);
-        
-        // Save extra data to Firestore
-        await _authService.createUserProfile(userCredential!.user!.uid, {
-          'name': nameController.text,
-          'email': emailController.text,
-          'birthDate': birthController.text,
-          'phone': '', // Default empty
-          'location': '', // Default empty
-          'createdAt': FieldValue.serverTimestamp(),
-        });
+        final doc = await _authService.getUserProfile(userCredential!.user!.uid);
+        if (!doc.exists) {
+          await _authService.createUserProfile(userCredential.user!.uid, {
+            'name': userCredential.user!.displayName ?? '',
+            'email': userCredential.user!.email ?? '',
+            'birthDate': '',
+            'phone': '',
+            'location': '',
+          });
+        }
       }
-      if (mounted) Navigator.pop(context);
+      // Main screen will be shown by StreamBuilder in home_screen.dart
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).clearSnackBars();
@@ -98,6 +86,7 @@ class _SignUpPageState extends State<SignUpPage> {
     final isDark = widget.isDarkMode;
     final backgroundColor = isDark ? const Color(0xFF0A1929) : const Color(0xFFF5F9FF);
     final cardColor = isDark ? const Color(0xFF132F4C) : Colors.white;
+    final textColor = isDark ? Colors.white : const Color(0xFF1A1A1A);
     final subTextColor = isDark ? Colors.grey[400]! : Colors.grey[600]!;
     final borderColor = const Color(0xFF5EBBF5).withValues(alpha: 0.3);
 
@@ -108,7 +97,7 @@ class _SignUpPageState extends State<SignUpPage> {
           // Professional Header
           Container(
             width: double.infinity,
-            height: 180,
+            height: 220,
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
@@ -121,37 +110,22 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
             ),
             child: SafeArea(
-              child: Stack(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Positioned(
-                    top: 10,
-                    left: 10,
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
-                      onPressed: () => Navigator.pop(context),
-                    ),
+                  const Icon(
+                    Icons.check_circle_outline,
+                    color: Colors.white,
+                    size: 60,
                   ),
-                  Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          loc.createAccount,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          loc.signupPrompt,
-                          style: const TextStyle(
-                            color: Colors.white70,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
+                  SizedBox(height: 12),
+                  Text(
+                    loc.appTitle,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.5,
                     ),
                   ),
                 ],
@@ -161,10 +135,28 @@ class _SignUpPageState extends State<SignUpPage> {
 
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24.0),
+              padding: const EdgeInsets.fromLTRB(24, 40, 24, 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text(
+                    loc.signIn,
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    loc.loginPrompt,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: subTextColor,
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+
                   // Form Container
                   Container(
                     padding: const EdgeInsets.all(20),
@@ -181,31 +173,13 @@ class _SignUpPageState extends State<SignUpPage> {
                       ],
                     ),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildInputField(
-                          label: loc.fullName,
-                          controller: nameController,
-                          hint: loc.nameHint,
-                          icon: Icons.person_outline,
-                          isDark: isDark,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z ]')),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
                         _buildInputField(
                           label: loc.email,
                           controller: emailController,
                           hint: loc.emailHint,
                           icon: Icons.email_outlined,
-                          isDark: isDark,
-                        ),
-                        const SizedBox(height: 20),
-                        _buildInputField(
-                          label: loc.birthDate,
-                          controller: birthController,
-                          hint: loc.birthDateHint,
-                          icon: Icons.cake_outlined,
                           isDark: isDark,
                         ),
                         const SizedBox(height: 20),
@@ -223,20 +197,64 @@ class _SignUpPageState extends State<SignUpPage> {
                             });
                           },
                         ),
-                        const SizedBox(height: 20),
-                        _buildInputField(
-                          label: loc.confirmPassword,
-                          controller: confirmPasswordController,
-                          hint: loc.repeatPasswordHint,
-                          icon: Icons.lock_reset_outlined,
-                          isDark: isDark,
-                          isPassword: true,
-                          obscureText: _obscureConfirmPassword,
-                          onToggleVisibility: () {
-                            setState(() {
-                              _obscureConfirmPassword = !_obscureConfirmPassword;
-                            });
-                          },
+                        const SizedBox(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: Checkbox(
+                                    value: _rememberMe,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _rememberMe = value ?? false;
+                                      });
+                                    },
+                                    activeColor: const Color(0xFF2B7FE8),
+                                    side: BorderSide(color: subTextColor),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  loc.rememberMe,
+                                  style: TextStyle(
+                                    color: subTextColor,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute<void>(
+                                    builder: (context) =>
+                                        ForgotPasswordScreen(isDarkMode: isDark),
+                                  ),
+                                );
+                              },
+                              style: TextButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                minimumSize: Size.zero,
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              ),
+                              child: Text(
+                                loc.forgotPasswordQuestion,
+                                style: const TextStyle(
+                                  color: Color(0xFF2B7FE8),
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -249,7 +267,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     width: double.infinity,
                     height: 56,
                     child: ElevatedButton(
-                      onPressed: _isLoading ? null : _handleSignUp,
+                      onPressed: _isLoading ? null : _handleLogin,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF2B7FE8),
                         foregroundColor: Colors.white,
@@ -262,7 +280,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: _isLoading
                           ? const CircularProgressIndicator(color: Colors.white)
                           : Text(
-                              loc.signUp,
+                              loc.login,
                               style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -279,13 +297,20 @@ class _SignUpPageState extends State<SignUpPage> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          loc.alreadyHaveAccount,
+                          loc.noAccount,
                           style: TextStyle(color: subTextColor),
                         ),
                         GestureDetector(
-                          onTap: () => Navigator.pop(context),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute<void>(
+                                builder: (context) => SignUpScreen(isDarkMode: isDark),
+                              ),
+                            );
+                          },
                           child: Text(
-                            loc.signIn,
+                            loc.signUp,
                             style: const TextStyle(
                               color: Color(0xFF2B7FE8),
                               fontWeight: FontWeight.bold,
@@ -313,7 +338,6 @@ class _SignUpPageState extends State<SignUpPage> {
     bool isPassword = false,
     bool obscureText = false,
     VoidCallback? onToggleVisibility,
-    List<TextInputFormatter>? inputFormatters,
   }) {
     final subTextColor = isDark ? Colors.grey[400]! : Colors.grey[600]!;
     final textColor = isDark ? Colors.white : Colors.black87;
@@ -333,7 +357,6 @@ class _SignUpPageState extends State<SignUpPage> {
         TextField(
           controller: controller,
           obscureText: obscureText,
-          inputFormatters: inputFormatters,
           style: TextStyle(color: textColor, fontSize: 15),
           decoration: InputDecoration(
             hintText: hint,

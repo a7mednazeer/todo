@@ -1,21 +1,22 @@
-import 'package:todo/classes/error_handler.dart';
-import 'package:todo/classes/auth_service.dart';
-import 'package:todo/classes/app_localizations.dart';
+import 'package:todo/core/errors/error_handler.dart';
+import 'package:todo/services/auth_service.dart';
+import 'package:todo/core/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 
-class EditProfilePage extends StatefulWidget {
+class EditProfileScreen extends StatefulWidget {
   final bool isDarkMode;
-  const EditProfilePage({super.key, required this.isDarkMode});
+  const EditProfileScreen({super.key, required this.isDarkMode});
 
   @override
-  State<EditProfilePage> createState() => _EditProfilePageState();
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
-class _EditProfilePageState extends State<EditProfilePage> {
+class _EditProfileScreenState extends State<EditProfileScreen> {
   late TextEditingController nameController;
   late TextEditingController phoneController;
   late TextEditingController locationController;
   late TextEditingController birthDateController;
+  late TextEditingController photoUrlController;
   final AuthService _authService = AuthService();
   bool _isLoading = false;
 
@@ -26,6 +27,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     phoneController = TextEditingController();
     locationController = TextEditingController();
     birthDateController = TextEditingController();
+    photoUrlController = TextEditingController();
     _loadUserData();
   }
 
@@ -46,6 +48,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             phoneController.text = data['phone'] ?? '';
             locationController.text = data['location'] ?? '';
             birthDateController.text = data['birthDate'] ?? '';
+            photoUrlController.text = data['photoUrl'] ?? '';
           });
         }
       } catch (e) {
@@ -60,6 +63,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     phoneController.dispose();
     locationController.dispose();
     birthDateController.dispose();
+    photoUrlController.dispose();
     super.dispose();
   }
 
@@ -67,6 +71,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
     if (nameController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(AppLocalizations.of(context).errorNameEmpty)),
+      );
+      return;
+    }
+
+    if (photoUrlController.text.isNotEmpty && !photoUrlController.text.startsWith('http')) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context).errInvalidPhotoUrl)),
       );
       return;
     }
@@ -81,6 +92,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           'phone': phoneController.text,
           'location': locationController.text,
           'birthDate': birthDateController.text,
+          'photoUrl': photoUrlController.text,
         });
       }
       if (mounted) {
@@ -141,7 +153,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   CircleAvatar(
                     radius: 60,
                     backgroundColor: const Color(0xFF2B7FE8).withValues(alpha: 0.1),
-                    child: Icon(Icons.person, size: 80, color: const Color(0xFF2B7FE8)),
+                    backgroundImage: photoUrlController.text.isNotEmpty ? NetworkImage(photoUrlController.text) : null,
+                    child: photoUrlController.text.isEmpty ? Icon(Icons.person, size: 80, color: const Color(0xFF2B7FE8)) : null,
                   ),
                   Positioned(
                     bottom: 0,
@@ -204,6 +217,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     icon: Icons.location_on_outlined,
                     isDark: isDark,
                   ),
+                  const SizedBox(height: 20),
+                  _buildInputField(
+                    label: loc.profilePhotoUrl,
+                    controller: photoUrlController,
+                    icon: Icons.image_outlined,
+                    isDark: isDark,
+                    hint: loc.photoUrlHint,
+                    onChanged: (val) => setState(() {}),
+                  ),
                 ],
               ),
             ),
@@ -237,6 +259,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     required bool isDark,
     String? hint,
     TextInputType keyboardType = TextInputType.text,
+    void Function(String)? onChanged,
   }) {
     final subTextColor = isDark ? Colors.grey[400]! : Colors.grey[600]!;
     final textColor = isDark ? Colors.white : Colors.black87;
@@ -249,6 +272,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         TextField(
           controller: controller,
           keyboardType: keyboardType,
+          onChanged: onChanged,
           style: TextStyle(color: textColor, fontSize: 15),
           decoration: InputDecoration(
             hintText: hint,

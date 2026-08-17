@@ -1,16 +1,16 @@
-import 'package:todo/classes/app_localizations.dart';
+import 'package:todo/core/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ContactSupportPage extends StatefulWidget {
+class ContactSupportScreen extends StatefulWidget {
   final bool isDarkMode;
-  const ContactSupportPage({super.key, required this.isDarkMode});
+  const ContactSupportScreen({super.key, required this.isDarkMode});
 
   @override
-  State<ContactSupportPage> createState() => _ContactSupportPageState();
+  State<ContactSupportScreen> createState() => _ContactSupportScreenState();
 }
 
-class _ContactSupportPageState extends State<ContactSupportPage> {
+class _ContactSupportScreenState extends State<ContactSupportScreen> {
   final TextEditingController _subjectController = TextEditingController();
   final TextEditingController _messageController = TextEditingController();
 

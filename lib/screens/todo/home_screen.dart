@@ -1,18 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:todo/classes/auth_service.dart';
+import 'package:todo/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:todo/classes/app_localizations.dart';
-import 'package:todo/classes/todo_item.dart';
-import 'package:todo/screens/settings_screen.dart';
-import 'package:todo/classes/todo_service.dart';
-import 'package:todo/classes/error_handler.dart';
-import 'package:todo/screens/todo_screen.dart';
-import 'package:todo/screens/login_page.dart';
-import 'package:todo/screens/profile_page.dart';
-import 'package:todo/screens/edit_profile_page.dart';
+import 'package:todo/core/localization/app_localizations.dart';
+import 'package:todo/models/todo_model.dart';
+import 'package:todo/screens/settings/settings_screen.dart';
+import 'package:todo/services/todo_service.dart';
+import 'package:todo/core/errors/error_handler.dart';
+import 'package:todo/screens/todo/todo_list_screen.dart';
+import 'package:todo/screens/auth/login_screen.dart';
+import 'package:todo/screens/profile/profile_screen.dart';
+import 'package:todo/screens/profile/edit_profile_screen.dart';
 
 class ToDoApp extends StatefulWidget {
   const ToDoApp({super.key});
@@ -135,9 +135,9 @@ class _ToDoAppState extends State<ToDoApp> {
               },
             );
           }
-          return LoginPage(
+          return LoginScreen(
             isDarkMode: isDarkMode,
-            onLogin: () {}, // Handled by AuthService inside LoginPage
+            onLogin: () {}, // Handled by AuthService inside LoginScreen
           );
         },
       ),
@@ -185,12 +185,12 @@ class _MainScreenState extends State<MainScreen> {
               ? const Color(0xFF0A1929)
               : const Color(0xFFE8F4F8),
           body: _currentIndex == 0
-              ? ToDoListScreen(
+              ? TodoListScreen(
                   todos: todos,
                   isDarkMode: isDark,
                 )
               : _currentIndex == 1
-                  ? ProfilePage(
+                  ? ProfileScreen(
                       isDarkMode: isDark,
                       todos: todos,
                     )
@@ -250,7 +250,7 @@ class _MainScreenState extends State<MainScreen> {
             Navigator.push(
               context,
               MaterialPageRoute<void>(
-                builder: (context) => EditProfilePage(isDarkMode: widget.isDarkMode),
+                builder: (context) => EditProfileScreen(isDarkMode: widget.isDarkMode),
               ),
             );
           } else {

@@ -1,18 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:todo/classes/error_handler.dart';
-import 'package:todo/classes/auth_service.dart';
-import 'package:todo/classes/app_localizations.dart';
+import 'package:todo/core/errors/error_handler.dart';
+import 'package:todo/services/auth_service.dart';
+import 'package:todo/core/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 
-class ChangePasswordPage extends StatefulWidget {
+class ChangePasswordScreen extends StatefulWidget {
   final bool isDarkMode;
-  const ChangePasswordPage({super.key, required this.isDarkMode});
+  const ChangePasswordScreen({super.key, required this.isDarkMode});
 
   @override
-  State<ChangePasswordPage> createState() => _ChangePasswordPageState();
+  State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
 }
 
-class _ChangePasswordPageState extends State<ChangePasswordPage> {
+class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   final TextEditingController currentPasswordController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo/classes/app_localizations.dart';
-import 'package:todo/screens/help_center_page.dart';
+import 'package:todo/core/localization/app_localizations.dart';
+import 'package:todo/screens/support/help_center_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   final bool isDarkMode;
@@ -89,7 +89,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (c) => HelpCenterPage(isDarkMode: isDark),
+                        builder: (c) => HelpCenterScreen(isDarkMode: isDark),
                       ),
                     );
                   },

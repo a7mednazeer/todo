@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:todo/classes/app_localizations.dart';
-import 'package:todo/classes/error_handler.dart';
+import 'package:todo/core/localization/app_localizations.dart';
+import 'package:todo/core/errors/error_handler.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {

@@ -1,16 +1,16 @@
-import 'package:todo/classes/app_localizations.dart';
+import 'package:todo/core/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class FeedbackPage extends StatefulWidget {
+class FeedbackScreen extends StatefulWidget {
   final bool isDarkMode;
-  const FeedbackPage({super.key, required this.isDarkMode});
+  const FeedbackScreen({super.key, required this.isDarkMode});
 
   @override
-  State<FeedbackPage> createState() => _FeedbackPageState();
+  State<FeedbackScreen> createState() => _FeedbackScreenState();
 }
 
-class _FeedbackPageState extends State<FeedbackPage> {
+class _FeedbackScreenState extends State<FeedbackScreen> {
   final TextEditingController _feedbackController = TextEditingController();
   String _selectedType = 'feedback_suggestion';
 

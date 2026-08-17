@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:todo/classes/app_localizations.dart';
-import 'package:todo/classes/todo_item.dart';
+import 'package:todo/core/localization/app_localizations.dart';
+import 'package:todo/models/todo_model.dart';
 
 class EditTaskScreen extends StatefulWidget {
   final TodoItem todo;

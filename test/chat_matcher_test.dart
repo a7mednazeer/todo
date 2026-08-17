@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:todo/classes/chat_matcher.dart';
-import 'package:todo/classes/faq_catalog.dart';
+import 'package:todo/utils/chat_matcher.dart';
+import 'package:todo/models/faq_model.dart';
 
 void main() {
   group('ChatMatcher Tests', () {

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:todo/classes/faq_catalog.dart';
-import 'package:todo/classes/chat_matcher.dart';
-import 'package:todo/classes/app_localizations.dart';
+import 'package:todo/models/faq_model.dart';
+import 'package:todo/utils/chat_matcher.dart';
+import 'package:todo/core/localization/app_localizations.dart';
 
-import 'package:todo/screens/contact_support_page.dart';
-import 'package:todo/screens/feedback_page.dart';
+import 'package:todo/screens/support/contact_support_screen.dart';
+import 'package:todo/screens/support/feedback_screen.dart';
 
-class HelpCenterPage extends StatelessWidget {
+class HelpCenterScreen extends StatelessWidget {
   final bool isDarkMode;
-  const HelpCenterPage({super.key, required this.isDarkMode});
+  const HelpCenterScreen({super.key, required this.isDarkMode});
 
   @override
   Widget build(BuildContext context) {
@@ -63,14 +63,14 @@ class HelpCenterPage extends StatelessWidget {
               icon: Icons.mail_outline,
               title: loc.contactSupport,
               subtitle: loc.contactSubtitle,
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (c) => ContactSupportPage(isDarkMode: isDark))),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (c) => ContactSupportScreen(isDarkMode: isDark))),
               isDark: isDark,
             ),
             _buildMenuTile(
               icon: Icons.feedback_outlined,
               title: loc.sendFeedback,
               subtitle: loc.feedbackSubtitle,
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (c) => FeedbackPage(isDarkMode: isDark))),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (c) => FeedbackScreen(isDarkMode: isDark))),
               isDark: isDark,
             ),
             const SizedBox(height: 24),

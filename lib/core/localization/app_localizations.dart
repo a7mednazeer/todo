@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo/classes/faq_catalog.dart';
+import 'package:todo/models/faq_model.dart';
 
 class AppLocalizations {
   final String languageCode;
@@ -185,6 +185,9 @@ class AppLocalizations {
       'support_request': 'Support Request',
       'app_feedback': 'App Feedback',
       'birth_date_hint': 'DD/MM/YYYY',
+      'profile_photo_url': 'Profile Photo URL',
+      'photo_url_hint': 'Enter image URL (e.g. https://...)',
+      'err_invalid_photo_url': 'Please enter a valid image URL',
     },
     'ar': {
       'no_tasks': 'لا توجد مهام بعد',
@@ -360,6 +363,9 @@ class AppLocalizations {
       'support_request': 'طلب دعم',
       'app_feedback': 'ملاحظات التطبيق',
       'birth_date_hint': 'يوم/شهر/سنة',
+      'profile_photo_url': 'رابط صورة الملف الشخصي',
+      'photo_url_hint': 'أدخل رابط الصورة (مثال: https://...)',
+      'err_invalid_photo_url': 'يرجى إدخال رابط صورة صالح',
     },
     'es': {
       'no_tasks': 'No Hay Tareas',
@@ -535,6 +541,9 @@ class AppLocalizations {
       'support_request': 'Solicitud de Soporte',
       'app_feedback': 'Comentarios de la Aplicación',
       'birth_date_hint': 'DD/MM/AAAA',
+      'profile_photo_url': 'URL de la foto de perfil',
+      'photo_url_hint': 'Introduce la URL de la imagen (ej. https://...)',
+      'err_invalid_photo_url': 'Por favor, introduce una URL de imagen válida',
     },
     'fr': {
       'no_tasks': 'Aucune Tâche',
@@ -710,6 +719,9 @@ class AppLocalizations {
       'support_request': 'Demande d\'Assistance',
       'app_feedback': 'Commentaires sur l\'Application',
       'birth_date_hint': 'JJ/MM/AAAA',
+      'profile_photo_url': 'URL de la photo de profil',
+      'photo_url_hint': 'Entrez l\'URL de l\'image (ex. https://...)',
+      'err_invalid_photo_url': 'Veuillez entrer une URL d\'image valide',
     },
     'de': {
       'no_tasks': 'Keine Aufgaben',
@@ -885,6 +897,9 @@ class AppLocalizations {
       'support_request': 'Support-Anfrage',
       'app_feedback': 'App-Feedback',
       'birth_date_hint': 'TT.MM.JJJJ',
+      'profile_photo_url': 'Profilbild-URL',
+      'photo_url_hint': 'Bild-URL eingeben (z. B. https://...)',
+      'err_invalid_photo_url': 'Bitte geben Sie eine gültige Bild-URL ein',
     },
     'it': {
       'no_tasks': 'Nessuna Attività',
@@ -1060,6 +1075,9 @@ class AppLocalizations {
       'support_request': 'Richiesta di Supporto',
       'app_feedback': 'Feedback sull\'App',
       'birth_date_hint': 'GG/MM/AAAA',
+      'profile_photo_url': 'URL della foto del profilo',
+      'photo_url_hint': 'Inserisci l\'URL dell\'immagine (es. https://...)',
+      'err_invalid_photo_url': 'Inserisci un URL immagine valido',
     },
     'ru': {
       'no_tasks': 'Нет Задач',
@@ -1235,6 +1253,9 @@ class AppLocalizations {
       'support_request': 'Запрос в поддержку',
       'app_feedback': 'Отзыв о приложении',
       'birth_date_hint': 'ДД.ММ.ГГГГ',
+      'profile_photo_url': 'URL фото профиля',
+      'photo_url_hint': 'Введите URL изображения (например, https://...)',
+      'err_invalid_photo_url': 'Пожалуйста, введите корректный URL изображения',
     },
     'tr': {
       'no_tasks': 'Görev Yok',
@@ -1410,6 +1431,9 @@ class AppLocalizations {
       'support_request': 'Destek Talebi',
       'app_feedback': 'Uygulama Geri Bildirimi',
       'birth_date_hint': 'GG/AA/YYYY',
+      'profile_photo_url': 'Profil Fotoğrafı URL\'si',
+      'photo_url_hint': 'Resim URL\'sini girin (örn. https://...)',
+      'err_invalid_photo_url': 'Lütfen geçerli bir resim URL\'si girin',
     },
     'hi': {
       'no_tasks': 'कोई कार्य नहीं',
@@ -1585,6 +1609,9 @@ class AppLocalizations {
       'support_request': 'सहायता अनुरोध',
       'app_feedback': 'ऐप फीडबैक',
       'birth_date_hint': 'DD/MM/YYYY',
+      'profile_photo_url': 'प्रोफ़ाइल फोटो URL',
+      'photo_url_hint': 'इमेज URL दर्ज करें (जैसे https://...)',
+      'err_invalid_photo_url': 'कृपया एक मान्य इमेज URL दर्ज करें',
     },
     'zh': {
       'no_tasks': '暂无任务',
@@ -1760,6 +1787,9 @@ class AppLocalizations {
       'support_request': '支持请求',
       'app_feedback': '应用反馈',
       'birth_date_hint': '日/月/年',
+      'profile_photo_url': '个人资料照片 URL',
+      'photo_url_hint': '输入图片 URL（例如 https://...）',
+      'err_invalid_photo_url': '请输入有效的图片 URL',
     },
     'pt': {
       'no_tasks': 'Nenhuma Tarefa',
@@ -1935,6 +1965,9 @@ class AppLocalizations {
       'support_request': 'Solicitação de Suporte',
       'app_feedback': 'Feedback do Aplicativo',
       'birth_date_hint': 'DD/MM/AAAA',
+      'profile_photo_url': 'URL da foto de perfil',
+      'photo_url_hint': 'Insira o URL da imagem (ex: https://...)',
+      'err_invalid_photo_url': 'Por favor, insira um URL de imagem válido',
     },
     'nl': {
       'no_tasks': 'Geen Taken',
@@ -2110,6 +2143,9 @@ class AppLocalizations {
       'support_request': 'Ondersteuningsverzoek',
       'app_feedback': 'App-feedback',
       'birth_date_hint': 'DD-MM-JJJJ',
+      'profile_photo_url': 'Profielfoto URL',
+      'photo_url_hint': 'Voer afbeelding URL in (bijv. https://...)',
+      'err_invalid_photo_url': 'Voer een geldige afbeelding URL in',
     },
     'ko': {
       'no_tasks': '할 일 없음',
@@ -2285,6 +2321,9 @@ class AppLocalizations {
       'support_request': '지원 요청',
       'app_feedback': '앱 피드백',
       'birth_date_hint': 'YYYY/MM/DD',
+      'profile_photo_url': '프로필 사진 URL',
+      'photo_url_hint': '이미지 URL 입력 (예: https://...)',
+      'err_invalid_photo_url': '유효한 이미지 URL을 입력하세요',
     },
   };
 
@@ -2425,6 +2464,9 @@ class AppLocalizations {
   String get supportRequest => _localizedValues[languageCode]!['support_request']!;
   String get appFeedback => _localizedValues[languageCode]!['app_feedback']!;
   String get birthDateHint => _localizedValues[languageCode]!['birth_date_hint']!;
+  String get profilePhotoUrl => _localizedValues[languageCode]!['profile_photo_url']!;
+  String get photoUrlHint => _localizedValues[languageCode]!['photo_url_hint']!;
+  String get errInvalidPhotoUrl => _localizedValues[languageCode]!['err_invalid_photo_url']!;
 
   String get noName => _localizedValues[languageCode]!['no_name']!;
   String get noEmail => _localizedValues[languageCode]!['no_email']!;

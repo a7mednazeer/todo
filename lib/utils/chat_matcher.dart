@@ -1,4 +1,4 @@
-import 'package:todo/classes/faq_catalog.dart';
+import 'package:todo/models/faq_model.dart';
 
 class ChatMatcher {
   /// Threshold for character-trigram similarity (0.0 to 1.0)
